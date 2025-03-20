@@ -1,21 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import Link from "next/link"
 import { NavBar } from "./NavBar/NavBar"
 import { Menu } from "lucide-react"
 
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false)
-
-  // Add scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   return (
     <>
@@ -24,9 +13,9 @@ const Header = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <a href="/" className="flex items-center space-x-2 transition-transform hover:scale-105">
+            <Link href="/" className="flex items-center space-x-2 transition-transform hover:scale-105">
               <span className="font-bold tracking-tight text-xl md:text-2xl">Bella Artistry</span>
-            </a>
+            </Link>
 
             <div className="hidden md:block">
               <NavBar />

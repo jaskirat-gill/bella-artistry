@@ -9,5 +9,5 @@ export type NavLinkProps = LinkProps & {
 export function NavLink(props: NavLinkProps) {
   const { children, ...linkProps } = props;
 
-  return <Link {...linkProps}>{props.children}</Link>;
+  return <Link {...linkProps}>{children}</Link>;
 }

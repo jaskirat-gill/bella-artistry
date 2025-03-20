@@ -1,6 +1,7 @@
 import './globals.css';
 import Footer from '../components/Layout/Footer';
 import Header from '../components/Layout/Header';
+import { ReactNode } from 'react';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
@@ -8,11 +9,11 @@ import Header from '../components/Layout/Header';
  * **/
 export const revalidate = 0;
 
-export default function RootLayout(layoutProps: any) {
-  const { children } = layoutProps;
-  // Removed wixSession and Wix-specific logic
-  const isAuthenticated = true; // Dummy authentication check
+interface LayoutProps {
+  children: ReactNode;
+}
 
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <head>
@@ -22,23 +23,13 @@ export default function RootLayout(layoutProps: any) {
           content="Bella Artistry"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="https://dummyimage.com/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
-      {isAuthenticated ? (
-        <body className="parallax-background">
-          <Header />
-          <main className="bg-transparent min-h-[600px]">{children}</main>
-          <Footer />
-        </body>
-      ) : (
-        <body>
-          <main className="max-w-full-content mx-auto bg-white pt-32">
-            <h1>
-              Page not available. Please check your environment configuration.
-            </h1>
-          </main>
-        </body>
-      )}
+      <body className="parallax-background">
+        <Header />
+        <main className="bg-transparent min-h-[600px]">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
