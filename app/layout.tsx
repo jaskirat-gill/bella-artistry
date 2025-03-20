@@ -1,6 +1,6 @@
 import './globals.css';
-import Footer from './components/Layout/Footer';
-import Header from './components/Layout/Header';
+import Footer from '../components/Layout/Footer';
+import Header from '../components/Layout/Header';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.

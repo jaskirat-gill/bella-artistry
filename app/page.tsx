@@ -1,17 +1,21 @@
 "use client";
 
-import { useRef } from "react";
-import ServiceListPreview from "./components/ServiceList/ServiceListPreview";
+import { useEffect, useRef, useState } from "react";
+import ServiceListPreview from "../components/ServiceList/ServiceListPreview";
 import { ArrowDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Service from "@/types/Services";
+import { getServices } from "@/graphql/serviceController";
 
 export default function Home() {
-  // Dummy data for services
-  const services = [
-    { id: 1, name: "Non Bridal" },
-    { id: 2, name: "Bridal Makeup" },
-    { id: 3, name: "1 on 1 Classes" },
-  ];
+  const [services, setServices] =
+    useState<Service[]>([]);
+
+  useEffect(() => {
+    getServices().then((services) => {
+      setServices(services);
+    });
+  }, []);
 
   const aboutRef = useRef<HTMLDivElement>(null);
 
@@ -122,7 +126,7 @@ export default function Home() {
 
             {services?.length ? (
               <>
-                <ServiceListPreview services={services} />
+                <ServiceListPreview services={services.filter((service) => service.featured)} />
 
                 <div className="mt-12">
                   <Button asChild className="bg-pink-400 hover:bg-pink-900 hover:text-white">
