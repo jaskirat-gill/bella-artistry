@@ -1,95 +1,38 @@
-'use client';
-import { NavLink } from './NavLink';
-import { useCallback, useState } from 'react';
-import type { LinkProps } from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
 
-const navbarItems = [
-  { ref: '/book-now', label: 'Book' },
-  { ref: '/services', label: 'Services' },
-  { ref: '/team', label: 'Team' },
-  { ref: '/featured', label: 'Featured'},
-];
-
-export const StyledNavLink = ({
-  isActive,
-  className,
-  ...linkProps
-}: LinkProps & {
-  isActive: boolean;
-  children: React.ReactNode;
-  className?: string;
-}) => (
-  <NavLink
-    className={`${className ?? ''} ${
-      isActive ? 'text-turquoise-200' : 'hover:text-turquoise-200'
-    }`}
-    {...linkProps}
-  />
-);
-
-export function NavBar() {
-  const [isMenuShown, setIsMenuShown] = useState(false);
-  const pathname = usePathname();
-  const [linkRef, setLinkRef] = useState<LinkProps['href']>(pathname!);
-  const toggleOpen = useCallback(
-    () => setIsMenuShown(!isMenuShown),
-    [isMenuShown]
-  );
+export const NavBar = () => {
   return (
-    <>
-      <button
-        className="block md:hidden float-right relative z-50"
-        onClick={toggleOpen}
+    <nav className="flex items-center space-x-1">
+      <Link
+        href="/"
+        className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
       >
-        <div className="space-y-2 absolute top-0 right-5">
-          {(isMenuShown
-            ? [
-                'rotate-45 translate-y-[13px]',
-                'opacity-0 h-0',
-                '-rotate-45 translate-y-[-13px]',
-              ]
-            : ['', '', '']
-          ).map((className, index) => (
-            <span
-              key={index}
-              className={
-                'block h-[4px] w-8 bg-gray-600 transform transition duration-500 ease-in-out ' +
-                className
-              }
-            ></span>
-          ))}
-        </div>
-      </button>
-      <nav
-        className={`${
-          isMenuShown
-            ? 'max-md:w-full max-md:opacity-100'
-            : 'max-md:w-0 max-md:opacity-0'
-        } transition-all duration-500 ease-in-out md:block overflow-hidden max-md:absolute max-md:animate-sideways-once max-md:h-screen max-md:bg-white max-md:pt-24 z-40 top-0 right-0`}
+        Home
+      </Link>
+      <Link
+        href="/about"
+        className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
       >
-        <ul className="flex flex-col items-center md:flex-row gap-10 md:gap-4 min-[900px]:gap-5 lg:gap-8 justify-end text-sm md:text-[15px] leading-[22px]">
-          {navbarItems.map(({ ref, label }) => (
-            <li key={ref} className="relative">
-              <StyledNavLink
-                isActive={ref === linkRef}
-                href={ref}
-                onClick={() => {
-                  setLinkRef(ref);
-                  setIsMenuShown(false);
-                }}
-              >
-                {label}
-              </StyledNavLink>
-              <span className="absolute -bottom-5 md:hidden border-b-2 w-48 left-[calc(50%_-_theme(space.24))]" />
-            </li>
-          ))}
-          <li className="order-first md:order-last justify-end">
-            <div className="flex flex-nowrap text-turquoise-200 gap-2 justify-center items-center">
-            </div>
-          </li>
-        </ul>
-      </nav>
-    </>
+        About
+      </Link>
+      <Link
+        href="/services"
+        className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
+      >
+        Services
+      </Link>
+      <Link
+        href="/testimonials"
+        className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
+      >
+        Testimonials
+      </Link>
+      <Link
+        href="/blog"
+        className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
+      >
+        Blog
+      </Link>
+    </nav>
   );
-}
+};
