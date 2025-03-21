@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatDateToYYYYMMDD, formatDuration } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Service, { Artist } from "@/lib/types";
+import { getArtists, getServices } from "@/api/controller";
+import { fetchEventsForDay } from "@/api/calendar";
 
 // Helper functions for calendar
 const getDaysInMonth = (year: number, month: number) => {
@@ -49,49 +52,35 @@ export default function BookingPage() {
   // State for selections
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [selectedArtist, setSelectedArtist] = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [calendarDays, setCalendarDays] = useState<CalendarDate[]>([]);
 
-  // Days of week
+  const [services, setServices] = useState<Service[]>([]);
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const [timeSlots, setTimeslots] = useState<string[]>([]);
   const daysOfWeek = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
-  // Available time slots
-  const timeSlots = [
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "11:30 AM",
-    "12:00 PM",
-    "12:30 PM",
-    "1:00 PM",
-    "1:30 PM",
-    "2:00 PM",
-    "2:30 PM",
-    "3:00 PM",
-    "3:30 PM",
-    "4:00 PM",
-    "4:30 PM",
-    "5:00 PM",
-    "5:30 PM",
-    "6:00 PM",
-    "6:30 PM",
-  ];
-
-  // Artists
-  const artists = [
-    { id: "1", name: "Sharon Randhawa" },
-    { id: "2", name: "Shannon Randhawa" },
-    { id: "3", name: "Sharon #5" },
-    { id: "4", name: "Sharon #7 (My lucky #)" },
-  ];
-
-  // Services
-  const services = [
-    { id: "1", name: "Non Bridal Makeup", price: 100 },
-    { id: "2", name: "Bridal Makeup", price: 120 },
-    { id: "3", name: "1 on 1 Classes", price: 150 },
-  ];
+  // Fetch Data
+  useEffect(() => {
+    getServices().then((services) => {
+      setServices(services);
+    });
+    getArtists().then((artists) => {
+      setArtists(artists);
+    });
+  }, []);
+  useEffect(() => {
+    if (!selectedDate) return;
+    if (!selectedArtist) return;
+    console.log(selectedArtist);
+    fetchEventsForDay(
+      selectedArtist.calendarId,
+      formatDateToYYYYMMDD(selectedDate)
+    ).then((events) => {
+      setTimeslots(events);
+    });
+  }, [selectedDate, selectedArtist]);
 
   // Generate calendar days
   useEffect(() => {
@@ -169,8 +158,7 @@ export default function BookingPage() {
   // Get selected service price
   const getServicePrice = () => {
     if (!selectedService) return null;
-    const service = services.find((s) => s.id === selectedService);
-    return service ? service.price : null;
+    return selectedService.price;
   };
 
   // Format date for display
@@ -219,7 +207,13 @@ export default function BookingPage() {
                     <label className="block text-pink-900 font-medium mb-2">
                       Select Artist
                     </label>
-                    <Select onValueChange={setSelectedArtist}>
+                    <Select
+                      onValueChange={(value) =>
+                        setSelectedArtist(
+                          artists.find((artist) => artist.id === value) || null
+                        )
+                      }
+                    >
                       <SelectTrigger className="w-full border-pink-200 focus:ring-pink-500">
                         <SelectValue placeholder="Choose an artist" />
                       </SelectTrigger>
@@ -237,14 +231,21 @@ export default function BookingPage() {
                     <label className="block text-pink-900 font-medium mb-2">
                       Select Service
                     </label>
-                    <Select onValueChange={setSelectedService}>
+                    <Select
+                      onValueChange={(value) =>
+                        setSelectedService(
+                          services.find((service) => service.id === value) ||
+                            null
+                        )
+                      }
+                    >
                       <SelectTrigger className="w-full border-pink-200 focus:ring-pink-500">
                         <SelectValue placeholder="Choose a service" />
                       </SelectTrigger>
                       <SelectContent>
                         {services.map((service) => (
                           <SelectItem key={service.id} value={service.id}>
-                            {service.name} (${service.price})
+                            {service.title} (${service.price})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -377,16 +378,17 @@ export default function BookingPage() {
                     <div className="space-y-4">
                       <div>
                         <h3 className="font-medium text-pink-900">
-                          {services.find((s) => s.id === selectedService)?.name}
+                          {selectedService.title}
                         </h3>
                         <p className="text-pink-400">
-                          with{" "}
-                          {artists.find((a) => a.id === selectedArtist)?.name}
+                          with {selectedArtist.name}
                         </p>
                         <p className="text-pink-400">{formatSelectedDate()}</p>
                         <p className="text-pink-400">{selectedTime}</p>
                         <div className="mt-2 pt-2 border-t border-pink-100">
-                          <p className="text-sm text-pink-400">1 hour</p>
+                          <p className="text-sm text-pink-400">
+                            {formatDuration(selectedService.duration)}
+                          </p>
                           <p className="font-medium text-pink-900">
                             ${getServicePrice()?.toFixed(2)}
                           </p>

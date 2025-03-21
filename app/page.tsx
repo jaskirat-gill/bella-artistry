@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import ServiceListPreview from "../components/ServiceList/ServiceListPreview";
 import { ArrowDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Service from "@/types/Services";
-import { getServices } from "@/graphql/serviceController";
+import Service from "@/lib/types";
+import { getServices } from "@/api/controller";
 
 export default function Home() {
   const [services, setServices] =

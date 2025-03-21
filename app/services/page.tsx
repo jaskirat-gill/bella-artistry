@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, DollarSign, Sparkles } from "lucide-react";
 import { formatCurrency, formatDuration } from "@/lib/utils";
 import { motion } from "framer-motion";
-import Service from "@/types/Services";
-import { getServices } from "@/graphql/serviceController";
+import Service from "@/lib/types";
+import { getServices } from "@/api/controller";
 import Link from "next/link";
 
 
