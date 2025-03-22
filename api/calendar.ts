@@ -1,4 +1,5 @@
-import { CalendarEvent } from "@/lib/types";
+import { BookingData, CalendarEvent } from "@/lib/types";
+
 
 export const fetchEventsForDay = async (
   calendarId: string,

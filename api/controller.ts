@@ -1,58 +1,72 @@
 import Service, { Artist } from "@/lib/types";
-import { GET_SERVICES } from "./queries/services";
-import { GET_ARTISTS } from "./queries/artists";
+import { GET_SERVICES, GET_SERVICE_BY_ID } from "./queries/services";
+import { GET_ARTISTS, GET_ARTIST_BY_ID } from "./queries/artists";
 
-export function getServices(): Promise<Service[]> {
-  return fetch(process.env.NEXT_PUBLIC_GRAPHQL_URL as string, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: GET_SERVICES }),
-    cache: "no-store", // Use "force-cache" for static pages
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const services: Service[] = data.data.services.nodes.map((node: any) => ({
-        id: node.id,
-        title: node.title,
-        slug: node.title.toLowerCase().replace(/\s+/g, '-'),
-        ...node.serviceFields,
-      }));
-      return services;
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-      return [];
+const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
+
+async function fetchGraphQL(query: string, variables = {}): Promise<any> {
+  try {
+    const response = await fetch(GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables }),
+      cache: "no-store", // Use "force-cache" for static pages
     });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const json = await response.json();
+    return json.data;
+  } catch (error) {
+    console.error("GraphQL fetch error:", error);
+    return null;
+  }
 }
 
-export function getArtists(): Promise<Artist[]> {
-  return fetch(process.env.NEXT_PUBLIC_GRAPHQL_URL as string, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: GET_ARTISTS }),
-    cache: "no-store", // Use "force-cache" for static pages
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const artists: Artist[] = data.data.teamMembers.nodes.map((node: any) => ({
-        id: node.id,
-        name: node.title,
-        calendarId: node.teamFields.calendarId,
-      }));
-      return artists;
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-      return [];
-    });
+export async function getServices(): Promise<Service[]> {
+  const data = await fetchGraphQL(GET_SERVICES);
+  if (!data) return [];
+
+  return data.services.nodes.map((node: any) => ({
+    id: node.id,
+    title: node.title,
+    slug: node.title.toLowerCase().replace(/\s+/g, "-"),
+    ...node.serviceFields,
+  }));
+}
+
+export async function getServiceById(id: string): Promise<Service | null> {
+  const data = await fetchGraphQL(GET_SERVICE_BY_ID, { id });
+  if (!data || !data.service) return null;
+
+  return {
+    id: data.service.id,
+    title: data.service.title,
+    slug: data.service.title.toLowerCase().replace(/\s+/g, "-"),
+    ...data.service.serviceFields,
+  };
+}
+
+export async function getArtists(): Promise<Artist[]> {
+  const data = await fetchGraphQL(GET_ARTISTS);
+  if (!data) return [];
+
+  return data.teamMembers.nodes.map((node: any) => ({
+    id: node.id,
+    name: node.title,
+    calendarId: node.teamFields.calendarId,
+  }));
+}
+
+export async function getArtistById(id: string): Promise<Artist | null> {
+  const data = await fetchGraphQL(GET_ARTIST_BY_ID, { id });
+  if (!data || !data.teamMember) return null;
+
+  return {
+    id: data.teamMember.id,
+    name: data.teamMember.title,
+    calendarId: data.teamMember.teamFields.calendarId,
+  };
 }

@@ -11,3 +11,15 @@ query {
   }
 }
 `;
+
+export const GET_ARTIST_BY_ID = `
+query($id: ID!) {
+  teamMember(id: $id) {
+    id
+    title
+    teamFields {
+      calendarId
+    }
+  }
+}
+`;

@@ -19,3 +19,14 @@ export interface CalendarEvent {
     end: { dateTime: string };
   }
   
+export interface BookingData {
+  artistId: string | null;
+  serviceId: string | null;
+  date: string | null;
+  time: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phone: string | null;
+  notes: string | null;
+}
