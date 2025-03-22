@@ -1,14 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle, Calendar, Clock, User, Home, Mail } from "lucide-react"
 import Link from "next/link"
 
 export default function BookingConfirmationPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
 
   const [bookingData, setBookingData] = useState({
@@ -73,7 +72,7 @@ export default function BookingConfirmationPage() {
 
             <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-4 text-pink-900">Booking Confirmed!</h1>
             <p className="text-pink-700 mb-8 max-w-md mx-auto">
-              Thank you for your booking, {bookingData.firstName}. We've sent a confirmation email with all the details.
+              Thank you for your booking, {bookingData.firstName}. We&apos;ve sent a confirmation email with all the details.
             </p>
 
             <Card className="mb-8 text-left">
@@ -139,7 +138,7 @@ export default function BookingConfirmationPage() {
             <div className="bg-white p-6 rounded-lg mb-8">
               <h2 className="text-lg font-semibold text-pink-900 mb-3">Have Questions?</h2>
               <p className="text-pink-700 mb-4">
-                If you have any questions or need to make changes to your booking, please don't hesitate to contact us.
+                If you have any questions or need to make changes to your booking, please don&apos;t hesitate to contact us.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button variant="outline" className="border-pink-200 text-pink-900 hover:bg-pink-100" asChild>

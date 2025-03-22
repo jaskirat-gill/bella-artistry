@@ -165,7 +165,7 @@ export default function ContactDetailsPage() {
     // Create URL parameters with all data
     const params = new URLSearchParams({
       ...Object.fromEntries(
-        Object.entries(bookingData).filter(([_, v]) => v !== null) as [string, string][]
+        Object.entries(bookingData).filter(([v]) => v !== null) as [string, string][]
       ),
       firstName,
       lastName,

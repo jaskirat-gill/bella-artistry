@@ -343,7 +343,7 @@ export default function BookingPage() {
     } else {
       setCurrentMonth((prev) => prev - 1)
     }
-  }, [currentMonth, currentYear])
+  }, [currentMonth])
 
   // Navigate to next month
   const goToNextMonth = useCallback(() => {
@@ -353,7 +353,7 @@ export default function BookingPage() {
     } else {
       setCurrentMonth((prev) => prev + 1)
     }
-  }, [currentMonth, currentYear])
+  }, [currentMonth])
 
   // Handle date selection
   const handleDateSelect = useCallback((date: CalendarDate) => {
