@@ -119,6 +119,21 @@ export default function BookingReviewPage() {
         throw new Error("Failed to confirm booking")
       }
 
+      try {
+        const res = await fetch("/api/booking", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ bookingData, artist, service }),
+        });
+  
+        const data = await res.json();
+        console.log("Booking confirmation response:", data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
       // For now, we'll just simulate a successful booking
       const confirmationParams = new URLSearchParams({
         artistName: artist?.name || "",

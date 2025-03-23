@@ -29,3 +29,9 @@ export function formatDateToYYYYMMDD(date: { day: number; month: number; year: n
   const formattedMonth = (month + 1).toString().padStart(2, '0'); // month is 0-indexed
   return `${year}-${formattedMonth}-${formattedDay}`;
 }
+
+export const formatDate = (dateInput: string | Date): string => {
+  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+  const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString("en-US", options);
+};
