@@ -1,6 +1,7 @@
-import Service, { Artist } from "@/lib/types";
+import Service, { Artist, Testimonial } from "@/lib/types";
 import { GET_SERVICES, GET_SERVICE_BY_ID } from "./queries/services";
 import { GET_ARTISTS, GET_ARTIST_BY_ID } from "./queries/artists";
+import { GET_TESTIMONIALS } from "./queries/testimonials";
 
 const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
 
@@ -34,6 +35,17 @@ export async function getServices(): Promise<Service[]> {
     title: node.title,
     slug: node.title.toLowerCase().replace(/\s+/g, "-"),
     ...node.serviceFields,
+  }));
+}
+
+export async function getTestimonials(): Promise<Testimonial[]> {
+  const data = await fetchGraphQL(GET_TESTIMONIALS);
+  if (!data) return [];
+
+  return data.testimonials.nodes.map((node: any) => ({
+    id: node.id,
+    name: node.title,
+    ...node.testimonialfields,
   }));
 }
 

@@ -8,6 +8,11 @@ export default interface Service {
     slug: string;
 }
 
+export interface Testimonial {
+    id: string;
+    name: string;
+    quote: string;
+}
 export interface Artist {
     id: string;
     name: string;
@@ -17,6 +22,7 @@ export interface Artist {
 export interface CalendarEvent {
     start: { dateTime: string };
     end: { dateTime: string };
+    summary: string;
   }
   
 export interface BookingData {
