@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { CalendarEvent } from "@/lib/types";
 
+interface GoogleCalendarEvent {
+  start: { dateTime: string };
+  end: { dateTime: string };
+  summary: string;
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -35,13 +41,13 @@ export async function GET(req: Request) {
       throw new Error(data.error?.message || "Failed to fetch events");
     }
 
-    console.log("Fetched events:", data.items);
-    const events: CalendarEvent[] = data.items.map((item: any) => ({
-      start: { dateTime: item.start.dateTime },
-      end: { dateTime: item.end.dateTime },
-      summary: item.summary, // Assuming summary contains "Available" or other names
-    }));
-    console.log("Parsed events:", events);
+    const events: CalendarEvent[] = data.items.map(
+      (item: GoogleCalendarEvent) => ({
+        start: { dateTime: item.start.dateTime },
+        end: { dateTime: item.end.dateTime },
+        summary: item.summary, // Assuming summary contains "Available" or other names
+      })
+    );
     const timeSlots = generateTimeSlots(events);
 
     return new NextResponse(JSON.stringify({ timeSlots }), {
@@ -51,7 +57,9 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error("Error fetching events:", error);
     return new NextResponse(
-      JSON.stringify({ error: (error as Error).message || "Error fetching events" }),
+      JSON.stringify({
+        error: (error as Error).message || "Error fetching events",
+      }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
@@ -64,7 +72,7 @@ const generateTimeSlots = (events: CalendarEvent[]): string[] => {
   // Helper function to generate 60-minute slots within a given time range
   const generateSlotRange = (start: Date, end: Date) => {
     const slots: string[] = [];
-    let currentSlot = new Date(start);
+    const currentSlot = new Date(start);
 
     while (currentSlot < end) {
       const slotString = currentSlot.toTimeString().slice(0, 5);
