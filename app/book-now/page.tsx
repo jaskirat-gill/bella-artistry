@@ -16,7 +16,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import type Service from "@/lib/types";
 import type { TeamMember } from "@/lib/types";
 import { getArtists, getServices } from "@/api/controller";
-import { fetchEventsForDay } from "@/api/calendar";
 
 // Types
 interface CalendarDate {
@@ -296,11 +295,16 @@ export default function BookingPage() {
 
       try {
         const formattedDate = formatDateToYYYYMMDD(selectedDate);
-        const events = await fetchEventsForDay(
-          selectedArtist.calendarId,
-          formattedDate
+        const response = await fetch(
+          `/api/calendar/fetch?calendarId=${selectedArtist.calendarId}&date=${formattedDate}`
         );
-        setTimeSlots(events);
+        const data = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to fetch time slots");
+        }
+  
+        setTimeSlots(data.timeSlots);
       } catch (err) {
         console.error("Error fetching time slots:", err);
         setError(

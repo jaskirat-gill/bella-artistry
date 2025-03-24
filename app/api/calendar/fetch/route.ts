@@ -1,10 +1,19 @@
+import { NextResponse } from "next/server";
 import { CalendarEvent } from "@/lib/types";
 
-export const fetchEventsForDay = async (
-  calendarId: string,
-  date: string
-): Promise<any[]> => {
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const calendarId = searchParams.get("calendarId");
+    const date = searchParams.get("date");
+
+    if (!calendarId || !date) {
+      return new NextResponse(
+        JSON.stringify({ error: "Missing calendarId or date parameter" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
     if (!apiKey) throw new Error("Missing Google API Key");
 
@@ -33,12 +42,20 @@ export const fetchEventsForDay = async (
       summary: item.summary, // Assuming summary contains "Available" or other names
     }));
     console.log("Parsed events:", events);
-    return generateTimeSlots(events);
+    const timeSlots = generateTimeSlots(events);
+
+    return new NextResponse(JSON.stringify({ timeSlots }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error fetching events:", error);
-    return [];
+    return new NextResponse(
+      JSON.stringify({ error: (error as Error).message || "Error fetching events" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
-};
+}
 
 const generateTimeSlots = (events: CalendarEvent[]): string[] => {
   const availableSlots: Set<string> = new Set(); // Available slots

@@ -4,11 +4,11 @@ import Service, {
   Testimonial,
   MasterConfig,
 } from "@/lib/types";
-import { GET_SERVICES, GET_SERVICE_BY_ID } from "./queries/services";
-import { GET_ARTISTS, GET_ARTIST_BY_ID } from "./queries/artists";
-import { GET_TESTIMONIALS } from "./queries/testimonials";
-import { GET_PORTFOLIO } from "./queries/portfolio";
-import { GET_CONFIG } from "./queries/config";
+import { GET_SERVICES, GET_SERVICE_BY_ID } from "../lib/queries/services";
+import { GET_ARTISTS, GET_ARTIST_BY_ID } from "../lib/queries/artists";
+import { GET_TESTIMONIALS } from "../lib/queries/testimonials";
+import { GET_PORTFOLIO } from "../lib/queries/portfolio";
+import { GET_CONFIG } from "../lib/queries/config";
 
 const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
 
@@ -135,6 +135,6 @@ export async function getMasterConfig(): Promise<MasterConfig[]> {
     websiteUrl: node.masterConfigFields.websiteUrl,
     paymentNote: node.masterConfigFields.paymentNote,
     servicesPageContent: node.masterConfigFields.servicesPageContent,
-    testimonialsPageContent: node.masterConfigFields.testimonials
+    testimonialsPageContent: node.masterConfigFields.testimonialsPageContent
   }));
 }

@@ -9,7 +9,7 @@ const formatDateString = (date: string) => {
   const [year, month, day] = date.split("-").map((num) => num.padStart(2, "0"));
   return `${year}-${month}-${day}`;
 };
-
+ 
 export async function POST(req: Request) {
   try {
     const booking: BookingData = await req.json();
