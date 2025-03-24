@@ -24,8 +24,8 @@ export async function GET(req: Request) {
     if (!apiKey) throw new Error("Missing Google API Key");
 
     // Convert date to ISO format with start & end times (assuming 'YYYY-MM-DD' format)
-    const startOfDay = new Date(`${date}T00:00:00Z`).toISOString();
-    const endOfDay = new Date(`${date}T23:59:59Z`).toISOString();
+    const startOfDay = new Date(`${date}T00:00:00-0700`).toISOString();
+    const endOfDay = new Date(`${date}T23:59:59-0700`).toISOString();
 
     // Google Calendar API URL
     const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(

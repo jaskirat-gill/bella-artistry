@@ -91,7 +91,7 @@ export default function Home() {
                   className="group bg-pink-400 hover:bg-pink-900 hover:text-white"
                   asChild
                 >
-                  <a href="/about-me" className="flex items-center text-white">
+                  <a href="/portfolio" className="flex items-center text-white">
                     See More
                     <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -171,7 +171,7 @@ export default function Home() {
                   className="group bg-pink-400 hover:bg-pink-900 hover:text-white"
                   asChild
                 >
-                  <a href="/about-me" className="flex items-center text-white">
+                  <a href="/about" className="flex items-center text-white">
                     Read More
                     <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
