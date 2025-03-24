@@ -1,8 +1,9 @@
-import Service, { TeamMember, PortfolioItem, Testimonial } from "@/lib/types";
+import Service, { TeamMember, PortfolioItem, Testimonial, MasterConfig } from "@/lib/types";
 import { GET_SERVICES, GET_SERVICE_BY_ID } from "./queries/services";
 import { GET_ARTISTS, GET_ARTIST_BY_ID } from "./queries/artists";
 import { GET_TESTIMONIALS } from "./queries/testimonials";
 import { GET_PORTFOLIO } from "./queries/portfolio";
+import { GET_CONFIG } from "./queries/config";
 
 const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
 
@@ -104,4 +105,14 @@ export async function getArtistById(id: string): Promise<TeamMember | null> {
     image: data.teamMember.teammemberfields.profilePicture ? data.teamMember.teammemberfields.profilePicture.node.sourceUrl : null,
     calendarId: data.teamMember.teammemberfields.calendarId,
   };
+}
+
+export async function getMasterConfig(): Promise<MasterConfig[]> {
+  const data = await fetchGraphQL(GET_CONFIG);
+  if (!data) return [];
+
+  return data.masterConfigs.nodes.map((node: any) => ({
+    companyName: node.masterConfigFields.companyName,
+  }));
+
 }

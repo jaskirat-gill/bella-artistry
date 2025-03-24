@@ -49,3 +49,7 @@ export interface TeamMember {
   experience: string;
   calendarId: string;
 }
+
+export interface MasterConfig {
+  companyName: string;
+}
