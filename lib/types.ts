@@ -1,30 +1,32 @@
 export default interface Service {
-    id: string;
-    title: string;
-    duration: number;
-    price: number;
-    description: string;
-    featured: boolean;
-    slug: string;
+  id: string;
+  title: string;
+  duration: number;
+  price: number;
+  description: string;
+  featured: boolean;
+  slug: string;
 }
 
 export interface Testimonial {
-    id: string;
-    name: string;
-    quote: string;
+  id: string;
+  name: string;
+  quote: string;
 }
-export interface Artist {
-    id: string;
-    name: string;
-    calendarId: string;
+
+export interface PortfolioItem {
+  id: string;
+  name: string;
+  description: string;
+  sourceUrl: string;
 }
 
 export interface CalendarEvent {
-    start: { dateTime: string };
-    end: { dateTime: string };
-    summary: string;
-  }
-  
+  start: { dateTime: string };
+  end: { dateTime: string };
+  summary: string;
+}
+
 export interface BookingData {
   artistId: string | null;
   serviceId: string | null;
@@ -35,4 +37,15 @@ export interface BookingData {
   email: string | null;
   phone: string | null;
   notes: string | null;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  image: string | null;
+  bio: string;
+  specialties: string[];
+  experience: string;
+  calendarId: string;
 }

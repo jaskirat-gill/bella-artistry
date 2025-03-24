@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ArrowLeft, ArrowRight, AlertCircle, User, Calendar, Clock, CheckCircle2 } from 'lucide-react'
 import { getArtistById, getServiceById } from "@/api/controller"
-import Service, { Artist } from "@/lib/types"
+import Service, { TeamMember } from "@/lib/types"
 import { formatDuration } from "@/lib/utils"
 
 export default function ContactDetailsPage() {
@@ -46,7 +46,7 @@ export default function ContactDetailsPage() {
   })
   
   // Fetched data
-  const [artist, setArtist] = useState<Artist | null>(null)
+  const [artist, setArtist] = useState<TeamMember | null>(null)
   const [service, setService] = useState<Service | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -79,7 +79,7 @@ export default function ContactDetailsPage() {
           getArtistById(artistId),
           getServiceById(serviceId)
         ])
-        
+        console.log("artistData", artistData)
         if (!artistData || !serviceData) {
           throw new Error("Could not retrieve booking details")
         }

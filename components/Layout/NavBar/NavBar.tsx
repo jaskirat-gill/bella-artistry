@@ -28,10 +28,10 @@ export const NavBar = () => {
         Testimonials
       </Link>
       <Link
-        href="/blog"
+        href="/portfolio"
         className="px-3 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors text-sm font-medium"
       >
-        Blog
+        Portfolio
       </Link>
     </nav>
   );

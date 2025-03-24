@@ -21,7 +21,7 @@ import {
 import { formatDuration } from "@/lib/utils"
 import { getArtistById, getServiceById } from "@/api/controller"
 import type Service from "@/lib/types"
-import type { Artist, BookingData } from "@/lib/types"
+import type { TeamMember, BookingData } from "@/lib/types"
 
 export default function BookingReviewPage() {
   const router = useRouter()
@@ -39,7 +39,7 @@ export default function BookingReviewPage() {
     notes: null,
   })
 
-  const [artist, setArtist] = useState<Artist | null>(null)
+  const [artist, setArtist] = useState<TeamMember | null>(null)
   const [service, setService] = useState<Service | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

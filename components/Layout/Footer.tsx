@@ -128,10 +128,10 @@ const Footer = () => (
               Services
             </Link>
             <Link
-              href="/blog"
+              href="/portfolio"
               className="hover:text-pink-700 transition-colors"
             >
-              Featured
+              Portfolio
             </Link>
             <Link
               href="/team"

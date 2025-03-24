@@ -8,7 +8,7 @@ import { cn, formatDateToYYYYMMDD, formatDuration } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import type Service from "@/lib/types"
-import type { Artist } from "@/lib/types"
+import type { TeamMember } from "@/lib/types"
 import { getArtists, getServices } from "@/api/controller"
 import { fetchEventsForDay } from "@/api/calendar"
 
@@ -83,7 +83,7 @@ const TimeSlotSelector = ({
   isLoading,
 }: {
   selectedDate: CalendarDate | null
-  selectedArtist: Artist | null
+  selectedArtist: TeamMember | null
   timeSlots: string[]
   selectedTime: string | null
   onTimeSelect: (time: string) => void
@@ -143,7 +143,7 @@ const BookingSummary = ({
   selectedTime,
   formatSelectedDate,
 }: {
-  selectedArtist: Artist | null
+  selectedArtist: TeamMember | null
   selectedService: Service | null
   selectedDate: CalendarDate | null
   selectedTime: string | null
@@ -219,13 +219,13 @@ export default function BookingPage() {
   // State for selections
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null)
+  const [selectedArtist, setSelectedArtist] = useState<TeamMember | null>(null)
   const [selectedService, setSelectedService] = useState<Service | null>(null)
   const [calendarDays, setCalendarDays] = useState<CalendarDate[]>([])
 
   // Data state
   const [services, setServices] = useState<Service[]>([])
-  const [artists, setArtists] = useState<Artist[]>([])
+  const [artists, setArtists] = useState<TeamMember[]>([])
   const [timeSlots, setTimeSlots] = useState<string[]>([])
 
   // UI state
