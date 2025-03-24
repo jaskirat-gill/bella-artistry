@@ -52,4 +52,15 @@ export interface TeamMember {
 
 export interface MasterConfig {
   companyName: string;
+  landingPageTagline: string;
+  phoneNumber: string;
+  email: string;
+  instagramLink: string;
+  instagramHandle: string;
+  aboutPageContent: string;
+  missionStatement: string;
+  websiteUrl: string;
+  paymentNote: string;
+  servicesPageContent: string;
+  testimonialsPageContent: string;
 }

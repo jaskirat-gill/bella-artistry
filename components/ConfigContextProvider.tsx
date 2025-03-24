@@ -1,3 +1,4 @@
+"use client";
 import { MasterConfig } from "@/lib/types";
 import { createContext, ReactNode, useContext } from "react";
 

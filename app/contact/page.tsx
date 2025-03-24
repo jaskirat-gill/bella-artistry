@@ -1,14 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Send, CheckCircle2, AlertCircle, Instagram } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Instagram,
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { useConfig } from "@/components/ConfigContextProvider";
 
 // Animation variants
 const containerVariants = {
@@ -22,17 +30,17 @@ const itemVariants = {
 };
 
 export default function ContactPage() {
-  const searchParams = useSearchParams();
-
   // Form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState(""); // Replacing subject with phone number
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
+    null
+  );
   const [errorMessage, setErrorMessage] = useState("");
-
+  const config = useConfig();
   // Form validation state
   const [errors, setErrors] = useState<{
     name?: string;
@@ -42,7 +50,12 @@ export default function ContactPage() {
   }>({});
 
   const validateForm = () => {
-    const newErrors: { name?: string; email?: string; phone?: string; message?: string } = {};
+    const newErrors: {
+      name?: string;
+      email?: string;
+      phone?: string;
+      message?: string;
+    } = {};
 
     if (!name.trim()) {
       newErrors.name = "Name is required";
@@ -95,7 +108,7 @@ export default function ContactPage() {
       setEmail("");
       setPhone("");
       setMessage("");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error sending message:", error);
       setSubmitStatus("error");
       setErrorMessage("Failed to send your message. Please try again later.");
@@ -107,7 +120,13 @@ export default function ContactPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video autoPlay muted loop className="absolute w-full h-full object-cover" style={{ filter: "brightness(0.3)" }}>
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.3)" }}
+      >
         <source src="/sky.mp4" type="video/mp4" />
       </video>
 
@@ -119,7 +138,9 @@ export default function ContactPage() {
             <div className="inline-flex items-center justify-center p-1 bg-pink-500 rounded-lg mb-4">
               <Mail className="h-5 w-5 text-white" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">Get in Touch</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Get in Touch
+            </h1>
             <p className="text-lg text-pink-100 mb-8">
               Have questions about our services? Get in touch now to learn more.
             </p>
@@ -133,7 +154,10 @@ export default function ContactPage() {
               animate="visible"
               className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl p-8"
             >
-              <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-pink-900">
+              <motion.h2
+                variants={itemVariants}
+                className="text-2xl font-bold mb-6 text-pink-900"
+              >
                 Send a Message
               </motion.h2>
 
@@ -142,8 +166,13 @@ export default function ContactPage() {
                   <div className="flex items-center">
                     <CheckCircle2 className="h-4 w-4 text-green-600 mr-2" />
                     <div>
-                      <h4 className="text-green-800 font-bold">Message Sent!</h4>
-                      <p className="text-green-700">Thank you for reaching out. We'll get back to you as soon as possible.</p>
+                      <h4 className="text-green-800 font-bold">
+                        Message Sent!
+                      </h4>
+                      <p className="text-green-700">
+                        Thank you for reaching out. We&apos;ll get back to you as
+                        soon as possible.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -170,10 +199,14 @@ export default function ContactPage() {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className={`border-pink-200 focus:ring-pink-500 ${errors.name ? "border-red-500" : ""}`}
+                    className={`border-pink-200 focus:ring-pink-500 ${
+                      errors.name ? "border-red-500" : ""
+                    }`}
                     placeholder="Enter your name"
                   />
-                  {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                  {errors.name && (
+                    <p className="text-red-500 text-sm">{errors.name}</p>
+                  )}
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-2">
@@ -185,10 +218,14 @@ export default function ContactPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`border-pink-200 focus:ring-pink-500 ${errors.email ? "border-red-500" : ""}`}
+                    className={`border-pink-200 focus:ring-pink-500 ${
+                      errors.email ? "border-red-500" : ""
+                    }`}
                     placeholder="Enter your email address"
                   />
-                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email}</p>
+                  )}
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-2">
@@ -200,10 +237,14 @@ export default function ContactPage() {
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className={`border-pink-200 focus:ring-pink-500 ${errors.phone ? "border-red-500" : ""}`}
+                    className={`border-pink-200 focus:ring-pink-500 ${
+                      errors.phone ? "border-red-500" : ""
+                    }`}
                     placeholder="Enter your phone number"
                   />
-                  {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">{errors.phone}</p>
+                  )}
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-2">
@@ -214,14 +255,22 @@ export default function ContactPage() {
                     id="message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className={`border-pink-200 focus:ring-pink-500 min-h-[150px] ${errors.message ? "border-red-500" : ""}`}
+                    className={`border-pink-200 focus:ring-pink-500 min-h-[150px] ${
+                      errors.message ? "border-red-500" : ""
+                    }`}
                     placeholder="How can we help you?"
                   />
-                  {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
+                  {errors.message && (
+                    <p className="text-red-500 text-sm">{errors.message}</p>
+                  )}
                 </motion.div>
 
                 <motion.div variants={itemVariants}>
-                  <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600 text-white" disabled={isSubmitting}>
+                  <Button
+                    type="submit"
+                    className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? (
                       <>
                         <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent border-white"></div>
@@ -240,42 +289,67 @@ export default function ContactPage() {
 
             {/* Contact Information */}
             <div className="flex flex-col gap-8">
-              <motion.div variants={containerVariants} initial="hidden" animate="visible" className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl p-8">
-                <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6 text-pink-900">
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl p-8"
+              >
+                <motion.h2
+                  variants={itemVariants}
+                  className="text-2xl font-bold mb-6 text-pink-900"
+                >
                   Contact Information
                 </motion.h2>
                 <div className="space-y-6">
-                  <motion.div variants={itemVariants} className="flex items-start">
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex items-start"
+                  >
                     <div className="bg-pink-100 p-3 rounded-full mr-4">
                       <MapPin className="h-5 w-5 text-pink-500" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-pink-900 mb-1">Location</h3>
+                      <h3 className="font-medium text-pink-900 mb-1">
+                        Location
+                      </h3>
                       <p className="text-pink-700">Surrey, BC, Canada</p>
                     </div>
                   </motion.div>
-                  <motion.div variants={itemVariants} className="flex items-start">
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex items-start"
+                  >
                     <div className="bg-pink-100 p-3 rounded-full mr-4">
                       <Phone className="h-5 w-5 text-pink-500" />
                     </div>
                     <div>
                       <h3 className="font-medium text-pink-900 mb-1">Phone</h3>
                       <p className="text-pink-700">
-                        <a href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`} className="hover:text-pink-500 transition-colors">
-                          {process.env.NEXT_PUBLIC_PHONE_NUMBER}
+                        <a
+                          href={`tel:${config.phoneNumber}`}
+                          className="hover:text-pink-500 transition-colors"
+                        >
+                          {config.phoneNumber}
                         </a>
                       </p>
                     </div>
                   </motion.div>
-                  <motion.div variants={itemVariants} className="flex items-start">
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex items-start"
+                  >
                     <div className="bg-pink-100 p-3 rounded-full mr-4">
                       <Mail className="h-5 w-5 text-pink-500" />
                     </div>
                     <div>
                       <h3 className="font-medium text-pink-900 mb-1">Email</h3>
                       <p className="text-pink-700">
-                        <a href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`} className="hover:text-pink-500 transition-colors">
-                          {process.env.NEXT_PUBLIC_EMAIL}
+                        <a
+                          href={`mailto:${config.email}`}
+                          className="hover:text-pink-500 transition-colors"
+                        >
+                          {config.email}
                         </a>
                       </p>
                     </div>
@@ -283,16 +357,27 @@ export default function ContactPage() {
                 </div>
                 <Separator className="my-6" />
                 <motion.div variants={itemVariants}>
-                  <h3 className="font-medium text-pink-900 mb-4">Connect With Us</h3>
+                  <h3 className="font-medium text-pink-900 mb-4">
+                    Connect With Us
+                  </h3>
                   <div className="flex gap-4">
-                    <a href={`${process.env.NEXT_PUBLIC_INSTAGRAM}`} target="_blank" rel="noreferrer" className="bg-white p-2 rounded-full shadow-sm hover:shadow-md transition-shadow" aria-label="Instagram">
+                    <a
+                      href={`${config.instagramLink}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-white p-2 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                      aria-label="Instagram"
+                    >
                       <Instagram className="h-5 w-5 text-pink-500" />
                     </a>
                   </div>
                 </motion.div>
               </motion.div>
               {/* Map */}
-              <motion.div variants={itemVariants} className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden h-[300px]">
+              <motion.div
+                variants={itemVariants}
+                className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden h-[300px]"
+              >
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12416.967524349404!2d-122.83522613355464!3d49.137057221226044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5485db798e284833%3A0xaeda12dd446c0db6!2sBella%20Artistry!5e0!3m2!1sen!2sca!4v1742770863398!5m2!1sen!2sca"
                   width="100%"

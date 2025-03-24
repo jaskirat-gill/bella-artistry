@@ -15,13 +15,23 @@ export async function POST(req: Request) {
     const booking: BookingData = await req.json();
     console.log("Creating Google Calendar event:", booking);
 
-    if (!booking.artistId || !booking.serviceId || !booking.date || !booking.time) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (
+      !booking.artistId ||
+      !booking.serviceId ||
+      !booking.date ||
+      !booking.time
+    ) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Load service account credentials from env
-    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT || "{}");
-    
+    const serviceAccount = JSON.parse(
+      process.env.GOOGLE_SERVICE_ACCOUNT || "{}"
+    );
+
     const auth = new JWT({
       email: serviceAccount.client_email,
       key: serviceAccount.private_key,
@@ -37,7 +47,10 @@ export async function POST(req: Request) {
     const duration = service?.duration || 60;
 
     if (!calendarId) {
-      return NextResponse.json({ error: "Artist calendar ID not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Artist calendar ID not found" },
+        { status: 404 }
+      );
     }
 
     // Fix date formatting
@@ -52,7 +65,10 @@ export async function POST(req: Request) {
     const event = {
       summary: `${booking.firstName} ${booking.lastName} - ${service?.title}`,
       description: booking.notes || "No additional notes.",
-      start: { dateTime: startTime.toISOString(), timeZone: "America/Vancouver" },
+      start: {
+        dateTime: startTime.toISOString(),
+        timeZone: "America/Vancouver",
+      },
       end: { dateTime: endTime.toISOString(), timeZone: "America/Vancouver" },
     };
 
@@ -65,6 +81,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, event: response.data });
   } catch (error) {
     console.error("Error creating Google Calendar event:", error);
-    return NextResponse.json({ error: "Failed to create event" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create event" },
+      { status: 500 }
+    );
   }
 }

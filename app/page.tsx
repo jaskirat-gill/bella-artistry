@@ -4,16 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import ServiceListPreview from "../components/ServiceList/ServiceListPreview";
 import { ArrowDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Service from "@/lib/types";
-import { getServices } from "@/api/controller";
+import Service, { PortfolioItem } from "@/lib/types";
+import { getPortfolio, getServices } from "@/api/controller";
+import { useConfig } from "@/components/ConfigContextProvider";
 
 export default function Home() {
-  const [services, setServices] =
-    useState<Service[]>([]);
-
+  const [services, setServices] = useState<Service[]>([]);
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
+  const config = useConfig();
   useEffect(() => {
     getServices().then((services) => {
       setServices(services);
+    });
+    getPortfolio().then((portfolio) => {
+      setPortfolio(portfolio);
+      console.log("portfolio", portfolio);
     });
   }, []);
 
@@ -39,10 +44,10 @@ export default function Home() {
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto text-white">
           <p className="font-sans font-medium uppercase tracking-widest text-sm md:text-base mb-4 opacity-90">
-            Cool Fancy Headline - Sharon Is Awesome
+            {config.landingPageTagline}
           </p>
           <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold mb-12 tracking-tight">
-            IDEK
+            {config.companyName}
           </h1>
           <Button
             className="bg-white text-black hover:bg-white/90 px-8 py-6 text-lg rounded-full transition-all"
@@ -72,14 +77,12 @@ export default function Home() {
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p className="leading-relaxed text-pink-900">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                  diam.
+                  We take pride in our work and strive to provide the best
+                  service to our clients. Have a look at our portfolio to see
+                  some of our recent work.
                 </p>
                 <p className="leading-relaxed text-pink-900">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                  diam.
+                  Click see more to learn more!
                 </p>
               </div>
               <div className="mt-8">
@@ -98,7 +101,7 @@ export default function Home() {
             <div className="order-1 md:order-2 h-[400px] md:h-[500px] overflow-hidden rounded-lg shadow-xl">
               <div
                 className="w-full h-full bg-cover bg-center transition-transform hover:scale-105 duration-700"
-                style={{ backgroundImage: "url('/about-me.jpeg')" }}
+                style={{ backgroundImage: `url(${portfolio[0]?.sourceUrl})` }}
               ></div>
             </div>
           </div>
@@ -126,10 +129,15 @@ export default function Home() {
 
             {services?.length ? (
               <>
-                <ServiceListPreview services={services.filter((service) => service.featured)} />
+                <ServiceListPreview
+                  services={services.filter((service) => service.featured)}
+                />
 
                 <div className="mt-12">
-                  <Button asChild className="bg-pink-400 hover:bg-pink-900 hover:text-white">
+                  <Button
+                    asChild
+                    className="bg-pink-400 hover:bg-pink-900 hover:text-white"
+                  >
                     <a href="/services">View All Services</a>
                   </Button>
                 </div>
@@ -150,14 +158,11 @@ export default function Home() {
               </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p className="leading-relaxed text-pink-900">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                  diam.
+                  {config.aboutPageContent}
                 </p>
                 <p className="leading-relaxed text-pink-900">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
-                  diam.
+                  Click Read More to learn more about our amazing Team and their
+                  work!
                 </p>
               </div>
               <div className="mt-8">
@@ -176,7 +181,7 @@ export default function Home() {
             <div className="order-1 md:order-2 h-[400px] md:h-[500px] overflow-hidden rounded-lg shadow-xl">
               <div
                 className="w-full h-full bg-cover bg-center transition-transform hover:scale-105 duration-700"
-                style={{ backgroundImage: "url('/about-me.jpeg')" }}
+                style={{ backgroundImage: "url('/logo.jpg')" }}
               ></div>
             </div>
           </div>

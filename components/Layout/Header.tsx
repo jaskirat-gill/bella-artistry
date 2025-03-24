@@ -6,10 +6,11 @@ import { NavBar } from "./NavBar/NavBar";
 import { Menu, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useConfig } from "../ConfigContextProvider";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-
+  const config = useConfig();
   // Add scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +41,7 @@ const Header = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold tracking-tight text-xl md:text-2xl text-pink-900">
-                  Bella Artistry
+                  {config.companyName}
                 </span>
                 <span className="text-xs text-pink-400 hidden sm:block">
                   By Bal Randhawa
@@ -87,7 +88,7 @@ const Header = () => {
                           <Sparkles className="h-4 w-4" />
                         </div>
                         <span className="font-bold text-lg text-pink-900">
-                          Bella Artistry
+                          {config.companyName}
                         </span>
                       </div>
                     </div>
@@ -153,10 +154,10 @@ const MobileNavBar = () => {
         Testimonials
       </Link>
       <Link
-        href="/blog"
+        href="/portfolio"
         className="px-2 py-2 text-pink-900 hover:bg-pink-100 rounded-md transition-colors"
       >
-        Blog
+        Portfolio
       </Link>
     </nav>
   );

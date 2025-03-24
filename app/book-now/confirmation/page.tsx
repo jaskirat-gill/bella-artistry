@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Calendar, Clock, User, Home, Mail } from "lucide-react"
-import Link from "next/link"
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckCircle, Calendar, Clock, User, Home, Mail } from "lucide-react";
+import Link from "next/link";
 
 export default function BookingConfirmationPage() {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const [bookingData, setBookingData] = useState({
     artistName: "",
@@ -18,7 +18,7 @@ export default function BookingConfirmationPage() {
     price: "",
     firstName: "",
     lastName: "",
-  })
+  });
 
   // Extract booking data from URL parameters
   useEffect(() => {
@@ -30,32 +30,38 @@ export default function BookingConfirmationPage() {
       price: searchParams.get("price") || "",
       firstName: searchParams.get("firstName") || "",
       lastName: searchParams.get("lastName") || "",
-    })
-  }, [searchParams])
+    });
+  }, [searchParams]);
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    if (!dateString) return ""
+    if (!dateString) return "";
 
     try {
-      const [year, month, day] = dateString.split("-").map(Number)
-      const date = new Date(year, month - 1, day)
+      const [year, month, day] = dateString.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
       return date.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric",
-      })
+      });
     } catch (err) {
-      console.error("Error formatting date:", err)
-      return dateString
+      console.error("Error formatting date:", err);
+      return dateString;
     }
-  }
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video autoPlay muted loop className="absolute w-full h-full object-cover" style={{ filter: "brightness(0.9)" }}>
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.9)" }}
+      >
         <source src="/sky.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -70,14 +76,19 @@ export default function BookingConfirmationPage() {
               </div>
             </div>
 
-            <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-4 text-pink-900">Booking Confirmed!</h1>
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-4 text-pink-900">
+              Booking Confirmed!
+            </h1>
             <p className="text-pink-700 mb-8 max-w-md mx-auto">
-              Thank you for your booking, {bookingData.firstName}. We&apos;ve sent a confirmation email with all the details.
+              Thank you for your booking, {bookingData.firstName}. We&apos;ve
+              sent a confirmation email with all the details.
             </p>
 
             <Card className="mb-8 text-left">
               <CardHeader className="pb-2">
-                <CardTitle className="text-xl text-pink-900">Booking Summary</CardTitle>
+                <CardTitle className="text-xl text-pink-900">
+                  Booking Summary
+                </CardTitle>
               </CardHeader>
 
               <CardContent className="space-y-4">
@@ -104,7 +115,9 @@ export default function BookingConfirmationPage() {
                     <Calendar className="h-5 w-5 text-pink-500 mt-0.5" />
                     <div>
                       <p className="font-medium text-pink-900">Date</p>
-                      <p className="text-pink-700">{formatDate(bookingData.date)}</p>
+                      <p className="text-pink-700">
+                        {formatDate(bookingData.date)}
+                      </p>
                     </div>
                   </div>
 
@@ -136,21 +149,35 @@ export default function BookingConfirmationPage() {
             </Card>
 
             <div className="bg-white p-6 rounded-lg mb-8">
-              <h2 className="text-lg font-semibold text-pink-900 mb-3">Have Questions?</h2>
+              <h2 className="text-lg font-semibold text-pink-900 mb-3">
+                Have Questions?
+              </h2>
               <p className="text-pink-700 mb-4">
-                If you have any questions or need to make changes to your booking, please don&apos;t hesitate to contact us.
+                If you have any questions or need to make changes to your
+                booking, please don&apos;t hesitate to contact us.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button variant="outline" className="border-pink-200 text-pink-900 hover:bg-pink-100" asChild>
+                <Button
+                  variant="outline"
+                  className="border-pink-200 text-pink-900 hover:bg-pink-100"
+                  asChild
+                >
                   <Link href="/contact">Contact Us</Link>
                 </Button>
-                <Button className="bg-pink-500 hover:bg-pink-600 text-white" asChild>
+                <Button
+                  className="bg-pink-500 hover:bg-pink-600 text-white"
+                  asChild
+                >
                   <Link href="tel:123-456-7890">Call Us</Link>
                 </Button>
               </div>
             </div>
 
-            <Button variant="ghost" className="text-pink-900 hover:bg-pink-100" asChild>
+            <Button
+              variant="ghost"
+              className="text-pink-900 hover:bg-pink-100"
+              asChild
+            >
               <Link href="/">
                 <Home className="mr-2 h-4 w-4" />
                 Return to Home
@@ -160,6 +187,5 @@ export default function BookingConfirmationPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   CheckCircle2,
   Clock,
@@ -17,15 +23,17 @@ import {
   Mail,
   Phone,
   MessageSquare,
-} from "lucide-react"
-import { formatDuration } from "@/lib/utils"
-import { getArtistById, getServiceById } from "@/api/controller"
-import type Service from "@/lib/types"
-import type { TeamMember, BookingData } from "@/lib/types"
+} from "lucide-react";
+import { formatDuration } from "@/lib/utils";
+import { getArtistById, getServiceById } from "@/api/controller";
+import type Service from "@/lib/types";
+import type { TeamMember, BookingData } from "@/lib/types";
+import { useConfig } from "@/components/ConfigContextProvider";
 
 export default function BookingReviewPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const config = useConfig();
 
   const [bookingData, setBookingData] = useState<BookingData>({
     artistId: null,
@@ -37,31 +45,42 @@ export default function BookingReviewPage() {
     email: null,
     phone: null,
     notes: null,
-  })
+  });
 
-  const [artist, setArtist] = useState<TeamMember | null>(null)
-  const [service, setService] = useState<Service | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [artist, setArtist] = useState<TeamMember | null>(null);
+  const [service, setService] = useState<Service | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Extract booking data from URL parameters
   useEffect(() => {
-    const artistId = searchParams.get("artistId")
-    const serviceId = searchParams.get("serviceId")
-    const date = searchParams.get("date")
-    const time = searchParams.get("time")
-    const firstName = searchParams.get("firstName")
-    const lastName = searchParams.get("lastName")
-    const email = searchParams.get("email")
-    const phone = searchParams.get("phone")
-    const notes = searchParams.get("notes")
+    const artistId = searchParams.get("artistId");
+    const serviceId = searchParams.get("serviceId");
+    const date = searchParams.get("date");
+    const time = searchParams.get("time");
+    const firstName = searchParams.get("firstName");
+    const lastName = searchParams.get("lastName");
+    const email = searchParams.get("email");
+    const phone = searchParams.get("phone");
+    const notes = searchParams.get("notes");
 
     // Validate required parameters
-    if (!artistId || !serviceId || !date || !time || !firstName || !lastName || !email || !phone) {
-      setError("Missing booking information. Please return to the booking page.")
-      setIsLoading(false)
-      return
+    if (
+      !artistId ||
+      !serviceId ||
+      !date ||
+      !time ||
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone
+    ) {
+      setError(
+        "Missing booking information. Please return to the booking page."
+      );
+      setIsLoading(false);
+      return;
     }
 
     setBookingData({
@@ -74,49 +93,52 @@ export default function BookingReviewPage() {
       email,
       phone,
       notes,
-    })
+    });
 
     // Fetch artist and service details
     const fetchDetails = async () => {
       try {
-        const [artistData, serviceData] = await Promise.all([getArtistById(artistId), getServiceById(serviceId)])
+        const [artistData, serviceData] = await Promise.all([
+          getArtistById(artistId),
+          getServiceById(serviceId),
+        ]);
 
         if (!artistData || !serviceData) {
-          throw new Error("Could not retrieve booking details")
+          throw new Error("Could not retrieve booking details");
         }
 
-        setArtist(artistData)
-        setService(serviceData)
+        setArtist(artistData);
+        setService(serviceData);
       } catch (err) {
-        console.error("Error fetching booking details:", err)
-        setError("Failed to load booking details. Please try again.")
+        console.error("Error fetching booking details:", err);
+        setError("Failed to load booking details. Please try again.");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchDetails()
-  }, [searchParams])
+    fetchDetails();
+  }, [searchParams]);
 
   // Handle going back to contact details page
   const handleBack = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   // Handle confirming booking
   const handleConfirm = async () => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       // In a real application, you would submit the booking to your backend here
       // const response = await submitBooking(bookingData)
       const response = await fetch("/api/calendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bookingData),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to confirm booking")
+        throw new Error("Failed to confirm booking");
       }
 
       try {
@@ -127,7 +149,7 @@ export default function BookingReviewPage() {
           },
           body: JSON.stringify({ bookingData, artist, service }),
         });
-  
+
         const data = await res.json();
         console.log("Booking confirmation response:", data);
       } catch (error) {
@@ -143,39 +165,45 @@ export default function BookingReviewPage() {
         price: service?.price.toString() || "",
         firstName: bookingData.firstName || "",
         lastName: bookingData.lastName || "",
-      })
+      });
 
-      router.push(`/book-now/confirmation?${confirmationParams.toString()}`)
+      router.push(`/book-now/confirmation?${confirmationParams.toString()}`);
     } catch (err) {
-      console.error("Error confirming booking:", err)
-      setError("Failed to confirm booking. Please try again.")
-      setIsSubmitting(false)
+      console.error("Error confirming booking:", err);
+      setError("Failed to confirm booking. Please try again.");
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // Format date for display
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return ""
+    if (!dateString) return "";
 
     try {
-      const [year, month, day] = dateString.split("-").map(Number)
-      const date = new Date(year, month - 1, day)
+      const [year, month, day] = dateString.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
       return date.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric",
-      })
+      });
     } catch (err) {
-      console.error("Error formatting date:", err)
-      return dateString
+      console.error("Error formatting date:", err);
+      return dateString;
     }
-  }
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video autoPlay muted loop className="absolute w-full h-full object-cover" style={{ filter: "brightness(0.9)" }}>
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.9)" }}
+      >
         <source src="/sky.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -187,7 +215,9 @@ export default function BookingReviewPage() {
             <h1 className="text-2xl md:text-4xl font-bold text-center tracking-tight mb-2 text-pink-900">
               Review Your Booking
             </h1>
-            <p className="text-center text-pink-400 mb-8">Please review your booking details before confirming</p>
+            <p className="text-center text-pink-400 mb-8">
+              Please review your booking details before confirming
+            </p>
 
             {error && (
               <Alert variant="destructive" className="mb-6">
@@ -205,8 +235,12 @@ export default function BookingReviewPage() {
               <>
                 <Card className="mb-8">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-xl text-pink-900">Booking Details</CardTitle>
-                    <CardDescription>Your selected service and appointment time</CardDescription>
+                    <CardTitle className="text-xl text-pink-900">
+                      Booking Details
+                    </CardTitle>
+                    <CardDescription>
+                      Your selected service and appointment time
+                    </CardDescription>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
@@ -223,7 +257,9 @@ export default function BookingReviewPage() {
                       <div>
                         <p className="font-medium text-pink-900">Service</p>
                         <p className="text-pink-700">{service?.title}</p>
-                        <p className="text-sm text-pink-400">{formatDuration(service?.duration || 0)}</p>
+                        <p className="text-sm text-pink-400">
+                          {formatDuration(service?.duration || 0)}
+                        </p>
                       </div>
                     </div>
 
@@ -231,7 +267,9 @@ export default function BookingReviewPage() {
                       <Calendar className="h-5 w-5 text-pink-500 mt-0.5" />
                       <div>
                         <p className="font-medium text-pink-900">Date</p>
-                        <p className="text-pink-700">{formatDate(bookingData.date)}</p>
+                        <p className="text-pink-700">
+                          {formatDate(bookingData.date)}
+                        </p>
                       </div>
                     </div>
 
@@ -248,7 +286,9 @@ export default function BookingReviewPage() {
                     <div className="flex items-start space-x-3">
                       <User className="h-5 w-5 text-pink-500 mt-0.5" />
                       <div>
-                        <p className="font-medium text-pink-900">Contact Information</p>
+                        <p className="font-medium text-pink-900">
+                          Contact Information
+                        </p>
                         <p className="text-pink-700">
                           {bookingData.firstName} {bookingData.lastName}
                         </p>
@@ -275,8 +315,12 @@ export default function BookingReviewPage() {
                       <div className="flex items-start space-x-3">
                         <MessageSquare className="h-5 w-5 text-pink-500 mt-0.5" />
                         <div>
-                          <p className="font-medium text-pink-900">Special Requests/Notes</p>
-                          <p className="text-pink-700 whitespace-pre-line">{bookingData.notes}</p>
+                          <p className="font-medium text-pink-900">
+                            Special Requests/Notes
+                          </p>
+                          <p className="text-pink-700 whitespace-pre-line">
+                            {bookingData.notes}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -287,8 +331,12 @@ export default function BookingReviewPage() {
                       <CreditCard className="h-5 w-5 text-pink-500 mt-0.5" />
                       <div>
                         <p className="font-medium text-pink-900">Price</p>
-                        <p className="text-xl font-semibold text-pink-900">${service?.price.toFixed(2)}</p>
-                        <p className="text-sm text-pink-400">To confirm your spot, 50% is required upfront via E-transfer sent to INSERT HERE. The balance can be paid via E-Transfer or Cash on or before your appointment.</p>
+                        <p className="text-xl font-semibold text-pink-900">
+                          ${service?.price.toFixed(2)}
+                        </p>
+                        <p className="text-sm text-pink-400">
+                          {config.paymentNote}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -325,6 +373,5 @@ export default function BookingReviewPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

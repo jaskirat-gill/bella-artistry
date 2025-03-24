@@ -12,10 +12,9 @@ export async function POST(req: Request) {
     // Format the date for better readability
     const formattedDate = formatDate(bookingData.date);
 
-
     // Ensure you have an email to send the confirmation to
     const recipientEmail = bookingData.email || process.env.SEND_EMAIL;
-    
+
     // Business details
     const businessName = "Bella Artistry";
     const businessPhone = process.env.SEND_PHONE || "+1234567890";
@@ -28,7 +27,7 @@ export async function POST(req: Request) {
       to: recipientEmail,
       from: {
         email: process.env.SEND_EMAIL || "",
-        name: businessName
+        name: businessName,
       },
       subject: `Booking Confirmation - ${service?.title}`,
       text: `Thank you for your booking, ${bookingData.firstName}!
@@ -166,7 +165,9 @@ If you need to make changes, please reach out to us at ${businessPhone} or ${bus
           </tr>
           
           <!-- Notes Section -->
-          ${bookingData.notes ? `
+          ${
+            bookingData.notes
+              ? `
           <tr>
             <td style="padding: 0 30px 30px 30px;" class="mobile-padding">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -183,7 +184,9 @@ If you need to make changes, please reach out to us at ${businessPhone} or ${bus
               </table>
             </td>
           </tr>
-          ` : ''}
+          `
+              : ""
+          }
           
           <!-- Call to Action -->
           <tr>
@@ -292,10 +295,11 @@ If you need to make changes, please reach out to us at ${businessPhone} or ${bus
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending confirmation email:", error);
+    const errorMessage = error instanceof Error ? error.message : "Error sending email";
     return new Response(
-      JSON.stringify({ error: error.message || "Error sending email" }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },

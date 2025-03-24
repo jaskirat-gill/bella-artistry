@@ -8,8 +8,7 @@ import { motion } from "framer-motion";
 import Service from "@/lib/types";
 import { getServices } from "@/api/controller";
 import Link from "next/link";
-
-
+import { useConfig } from "@/components/ConfigContextProvider";
 
 // Animation variants for staggered animations
 const containerVariants = {
@@ -36,6 +35,7 @@ const itemVariants = {
 export default function ServicesPage() {
   const [filter, setFilter] = useState<"all" | "featured">("all");
   const [services, setServices] = useState<Service[]>([]);
+  const config = useConfig();
 
   useEffect(() => {
     getServices().then((services) => {
@@ -73,11 +73,7 @@ export default function ServicesPage() {
               Our Services
             </h1>
             <p className="text-lg text-pink-100 mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Vestibulum cursus nisl nisi, nec euismod risus vestibulum quis.
-              Etiam sapien urna, feugiat vitae luctus non, malesuada feugiat
-              libero. Proin eu aliquet purus. Morbi non ex eu nunc cursus mollis
-              eu vitae justo.
+              {config.servicesPageContent}
             </p>
             <div className="flex justify-center space-x-4">
               <Button
@@ -124,17 +120,18 @@ export default function ServicesPage() {
             </h2>
             <p className="text-pink-100 mb-6">
               Our team is more than happy to help.{" "}
-              <Link href="/contact" className="text-pink-500 hover:text-pink-700 transition-colors">
-                  Get in touch now!
+              <Link
+                href="/contact"
+                className="text-pink-500 hover:text-pink-700 transition-colors"
+              >
+                Get in touch now!
               </Link>
             </p>
             <Button
               className="bg-pink-500 hover:bg-pink-600 text-white"
               asChild
             >
-              <Link href="/contact">
-                Contact Us
-              </Link>
+              <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
         </div>
@@ -142,8 +139,6 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-
 
 interface ServiceCardProps {
   service: Service;
@@ -191,9 +186,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
           className="w-full bg-pink-500 hover:bg-pink-600 text-white group"
           asChild
         >
-          <Link href={`/book-now/${service.slug}`} className="flex items-center justify-center">
-              Book Now
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <Link href={`/book-now`} className="flex items-center justify-center">
+            Book Now
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </Button>
       </div>

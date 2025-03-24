@@ -158,10 +158,12 @@ Website: ${websiteUrl}`,
         headers: { "Content-Type": "application/json" },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error sending contact form email:", error);
+    const errorMessage = error instanceof Error ? error.message : "Error sending email";
+
     return new Response(
-      JSON.stringify({ error: error.message || "Error sending email" }),
+      JSON.stringify({ error: errorMessage}),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },

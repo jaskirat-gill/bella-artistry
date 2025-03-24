@@ -218,8 +218,13 @@ export default function TestimonialsPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video autoPlay muted loop className="absolute w-full h-full object-cover" style={{ filter: "brightness(0.9)" }}>
-
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.9)" }}
+      >
         <source src="/sky.mp4" type="video/mp4" />
       </video>
 
@@ -234,11 +239,7 @@ export default function TestimonialsPage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Client Testimonials
             </h1>
-            <p className="text-lg text-pink-100 mb-8">
-              Discover how Bella Artistry has made the dreams of our
-              clients come true! These stories reflect the real experiences and results
-              achieved through our services.
-            </p>
+            <p className="text-lg text-pink-100 mb-8"></p>
           </div>
 
           {/* Testimonials Grid */}
@@ -269,14 +270,14 @@ export default function TestimonialsPage() {
               Share Your Experience
             </h2>
             <p className="text-pink-100 mb-6">
-              Have you had an amazing experience with our services? We'd love to
+              Have you had an amazing experience with our services? We&apos;d love to
               hear about it!.
             </p>
             <Button
               className="bg-pink-500 hover:bg-pink-600 text-white"
               asChild
             >
-              <a href="/contact?subject=My%20Testimonial">
+              <a href="https://www.google.com/maps/place/Bella+Artistry/@49.1397962,-122.827361,17z/data=!4m8!3m7!1s0x5485db798e284833:0xaeda12dd446c0db6!8m2!3d49.1397962!4d-122.8247861!9m1!1b1!16s%2Fg%2F11jzpvtv5v?entry=ttu&g_ep=EgoyMDI1MDMxOS4yIKXMDSoASAFQAw%3D%3D">
                 Submit Your Testimonial
               </a>
             </Button>

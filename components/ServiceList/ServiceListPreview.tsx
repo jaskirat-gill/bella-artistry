@@ -44,7 +44,7 @@ const ServiceCardPreview = ({ service }: { service: Service }) => {
         </p>
       </div>
       <div className="w-full mx-auto pb-8 absolute bottom-0 text-center text-pink-900">
-        <a href={`/book-now/${service.slug}`} className="btn-main">
+        <a href={`/book-now`} className="btn-main">
           Book Now
         </a>
       </div>

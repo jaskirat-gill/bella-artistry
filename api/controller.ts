@@ -1,4 +1,9 @@
-import Service, { TeamMember, PortfolioItem, Testimonial, MasterConfig } from "@/lib/types";
+import Service, {
+  TeamMember,
+  PortfolioItem,
+  Testimonial,
+  MasterConfig,
+} from "@/lib/types";
 import { GET_SERVICES, GET_SERVICE_BY_ID } from "./queries/services";
 import { GET_ARTISTS, GET_ARTIST_BY_ID } from "./queries/artists";
 import { GET_TESTIMONIALS } from "./queries/testimonials";
@@ -62,7 +67,6 @@ export async function getServiceById(id: string): Promise<Service | null> {
   };
 }
 
-
 export async function getArtists(): Promise<TeamMember[]> {
   const data = await fetchGraphQL(GET_ARTISTS);
   if (!data) return [];
@@ -72,9 +76,13 @@ export async function getArtists(): Promise<TeamMember[]> {
     name: node.title,
     role: node.teammemberfields.role,
     bio: node.teammemberfields.bio,
-    specialties: node.teammemberfields.specialtiesSeparatedByCommas.split(",").map((s: string) => s.trim()),
+    specialties: node.teammemberfields.specialtiesSeparatedByCommas
+      .split(",")
+      .map((s: string) => s.trim()),
     experience: node.teammemberfields.experience,
-    image: node.teammemberfields.profilePicture ? node.teammemberfields.profilePicture.node.sourceUrl : null,
+    image: node.teammemberfields.profilePicture
+      ? node.teammemberfields.profilePicture.node.sourceUrl
+      : null,
     calendarId: node.teammemberfields.calendarId,
   }));
 }
@@ -86,8 +94,8 @@ export async function getPortfolio(): Promise<PortfolioItem[]> {
   return data.portfolios.nodes.map((node: any) => ({
     id: node.id,
     name: node.title,
-    description : node.portfoliofields.description,
-    sourceUrl : node.portfoliofields.image.node.sourceUrl,
+    description: node.portfoliofields.description,
+    sourceUrl: node.portfoliofields.image.node.sourceUrl,
   }));
 }
 
@@ -100,9 +108,13 @@ export async function getArtistById(id: string): Promise<TeamMember | null> {
     name: data.teamMember.title,
     role: data.teamMember.teammemberfields.role,
     bio: data.teamMember.teammemberfields.bio,
-    specialties: data.teamMember.teammemberfields.specialtiesSeparatedByCommas.split(",").map((s: string) => s.trim()),
+    specialties: data.teamMember.teammemberfields.specialtiesSeparatedByCommas
+      .split(",")
+      .map((s: string) => s.trim()),
     experience: data.teamMember.teammemberfields.experience,
-    image: data.teamMember.teammemberfields.profilePicture ? data.teamMember.teammemberfields.profilePicture.node.sourceUrl : null,
+    image: data.teamMember.teammemberfields.profilePicture
+      ? data.teamMember.teammemberfields.profilePicture.node.sourceUrl
+      : null,
     calendarId: data.teamMember.teammemberfields.calendarId,
   };
 }
@@ -113,6 +125,16 @@ export async function getMasterConfig(): Promise<MasterConfig[]> {
 
   return data.masterConfigs.nodes.map((node: any) => ({
     companyName: node.masterConfigFields.companyName,
+    landingPageTagline: node.masterConfigFields.landingPageTagline,
+    phoneNumber: node.masterConfigFields.phoneNumber,
+    email: node.masterConfigFields.email,
+    instagramLink: node.masterConfigFields.instagramLink,
+    instagramHandle: node.masterConfigFields.instagramHandle,
+    aboutPageContent: node.masterConfigFields.aboutPageContent,
+    missionStatement: node.masterConfigFields.missionStatement,
+    websiteUrl: node.masterConfigFields.websiteUrl,
+    paymentNote: node.masterConfigFields.paymentNote,
+    servicesPageContent: node.masterConfigFields.servicesPageContent,
+    testimonialsPageContent: node.masterConfigFields.testimonials
   }));
-
 }

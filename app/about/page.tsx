@@ -7,6 +7,7 @@ import { Users, Award, Heart, Mail, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { TeamMember } from "@/lib/types";
 import { getArtists } from "@/api/controller";
+import { useConfig } from "@/components/ConfigContextProvider";
 
 // Animation variants
 const containerVariants = {
@@ -171,7 +172,7 @@ const TeamMemberDetail = ({
 export default function AboutPage() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-
+  const config = useConfig();
   // Fetch team members
   useEffect(() => {
     getArtists().then((data) => {
@@ -204,9 +205,7 @@ export default function AboutPage() {
               Meet Our Team
             </h1>
             <p className="text-lg text-pink-100 mb-8">
-              Our talented team of professionals is dedicated to helping you
-              look and feel your best. Each member brings unique skills and
-              expertise to provide you with exceptional service.
+              {config.aboutPageContent}
             </p>
           </div>
 
@@ -244,13 +243,7 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold mb-4 text-white">
                 Our Mission
               </h2>
-              <p className="text-pink-100 mb-6">
-                At Bella Artistry, we believe that true beauty comes from
-                within. Our mission is to help you discover and enhance your
-                natural beauty while building the confidence to shine in every
-                aspect of your life. We're committed to providing personalized
-                services that celebrate your uniqueness.
-              </p>
+              <p className="text-pink-100 mb-6">{config.missionStatement}</p>
               <Button
                 className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
                 asChild

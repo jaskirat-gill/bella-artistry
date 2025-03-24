@@ -18,6 +18,7 @@ interface LayoutProps {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const masterConfig: MasterConfig[] = await getMasterConfig();
+  console.log("config", masterConfig[0]);
 
   return (
     <html lang="en">
@@ -29,11 +30,9 @@ export default async function RootLayout({ children }: LayoutProps) {
       </head>
       <body className="parallax-background">
         <ConfigContextProvider config={masterConfig[0]}>
-          <>
             <Header />
             <main className="bg-transparent min-h-[600px]">{children}</main>
             <Footer />
-          </>
         </ConfigContextProvider>
       </body>
     </html>
