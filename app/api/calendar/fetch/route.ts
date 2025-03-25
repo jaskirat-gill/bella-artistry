@@ -53,7 +53,7 @@ export async function GET(req: Request) {
     );
 
     const timeSlots = generateTimeSlots(events, timeZone);
-
+    console.log("Available time slots:", timeSlots);
     return new NextResponse(JSON.stringify({ timeSlots }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -84,7 +84,7 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
       slots.push(slotString);
       currentSlot.setHours(currentSlot.getHours() + 1); // Increase by 1 hour
     }
-
+    console.log("Slots:", slots);
     return slots;
   };
 
