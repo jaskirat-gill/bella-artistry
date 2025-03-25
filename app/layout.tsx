@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { MasterConfig } from "@/lib/types";
 import ConfigContextProvider from "@/components/ConfigContextProvider";
 import { getMasterConfig } from "@/api/controller";
-
+import { Analytics } from "@vercel/analytics/react";
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
  * If you prefer having it reflected only after redeploy (not recommended) please remove it
@@ -29,9 +29,10 @@ export default async function RootLayout({ children }: LayoutProps) {
       </head>
       <body className="parallax-background">
         <ConfigContextProvider config={masterConfig[0]}>
-            <Header />
-            <main className="bg-transparent min-h-[600px]">{children}</main>
-            <Footer />
+          <Analytics />
+          <Header />
+          <main className="bg-transparent min-h-[600px]">{children}</main>
+          <Footer />
         </ConfigContextProvider>
       </body>
     </html>
