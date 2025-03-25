@@ -129,18 +129,33 @@ export default function BookingReviewPage() {
   const handleConfirm = async () => {
     try {
       setIsSubmitting(true);
+      if(!bookingData.time) {
+        throw new Error("Missing booking time");
+      }
+      // Adjust the time by adding 7 hours back
+      const [hour, minute] = bookingData.time.split(':').map(Number);
+      const date = new Date();
+      date.setHours(hour + 7, minute);
+      const adjustedHour = date.getHours().toString().padStart(2, '0');
+      const adjustedMinute = date.getMinutes().toString().padStart(2, '0');
+      const adjustedTime = `${adjustedHour}:${adjustedMinute}`;
+  
+      const adjustedBookingData = {
+        ...bookingData,
+        time: adjustedTime,
+      };
+  
       // In a real application, you would submit the booking to your backend here
-      // const response = await submitBooking(bookingData)
       const response = await fetch("/api/calendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingData),
+        body: JSON.stringify(adjustedBookingData),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to confirm booking");
       }
-
+  
       try {
         await fetch("/api/booking", {
           method: "POST",
@@ -149,22 +164,22 @@ export default function BookingReviewPage() {
           },
           body: JSON.stringify({ bookingData, artist, service }),
         });
-
+  
       } catch (error) {
         console.error("Error:", error);
       }
-
+  
       // For now, we'll just simulate a successful booking
       const confirmationParams = new URLSearchParams({
         artistName: artist?.name || "",
         serviceName: service?.title || "",
-        date: bookingData.date || "",
-        time: bookingData.time || "",
+        date: adjustedBookingData.date || "",
+        time: adjustedBookingData.time || "",
         price: service?.price.toString() || "",
-        firstName: bookingData.firstName || "",
-        lastName: bookingData.lastName || "",
+        firstName: adjustedBookingData.firstName || "",
+        lastName: adjustedBookingData.lastName || "",
       });
-
+  
       router.push(`/book-now/confirmation?${confirmationParams.toString()}`);
     } catch (err) {
       console.error("Error confirming booking:", err);
