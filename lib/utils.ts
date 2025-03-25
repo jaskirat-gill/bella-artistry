@@ -35,3 +35,11 @@ export const formatDate = (dateInput: string | Date): string => {
   const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
   return date.toLocaleDateString("en-US", options);
 };
+
+export function formatTimeTo12Hour(time: string): string {
+  const [hour, minute] = time.split(':').map(Number);
+  const period = hour >= 12 ? 'pm' : 'am';
+  const formattedHour = hour % 12 || 12; // Convert 0 to 12 for midnight
+  return `${formattedHour}${period}`;
+}
+

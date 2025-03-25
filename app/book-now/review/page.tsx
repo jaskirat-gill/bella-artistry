@@ -151,7 +151,6 @@ export default function BookingReviewPage() {
         });
 
         const data = await res.json();
-        console.log("Booking confirmation response:", data);
       } catch (error) {
         console.error("Error:", error);
       }

@@ -102,7 +102,6 @@ export async function getPortfolio(): Promise<PortfolioItem[]> {
 export async function getArtistById(id: string): Promise<TeamMember | null> {
   const data = await fetchGraphQL(GET_ARTIST_BY_ID, { id });
   if (!data || !data.teamMember) return null;
-  console.log("data", data);
   return {
     id: data.teamMember.id,
     name: data.teamMember.title,

@@ -18,7 +18,6 @@ export default function Home() {
     });
     getPortfolio().then((portfolio) => {
       setPortfolio(portfolio);
-      console.log("portfolio", portfolio);
     });
   }, []);
 

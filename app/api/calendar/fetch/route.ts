@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { fromZonedTime, format } from "date-fns-tz";
 import { CalendarEvent } from "@/lib/types";
 
 interface GoogleCalendarEvent {
@@ -23,20 +24,22 @@ export async function GET(req: Request) {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
     if (!apiKey) throw new Error("Missing Google API Key");
 
-    // Convert date to ISO format with start & end times (assuming 'YYYY-MM-DD' format)
-    const startOfDay = new Date(`${date}T00:00:00-0700`).toISOString();
-    const endOfDay = new Date(`${date}T23:59:59-0700`).toISOString();
+    // Define the PST time zone (America/Los_Angeles)
+    const timeZone = "America/Los_Angeles";
 
-    // Google Calendar API URL
+    // Create start and end of day in PST and convert them to UTC for the API call
+    const startOfDayUtc = fromZonedTime(`${date}T00:00:00`, timeZone).toISOString();
+    const endOfDayUtc = fromZonedTime(`${date}T23:59:59`, timeZone).toISOString();
+
+    // Google Calendar API URL using UTC times
     const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
       calendarId
-    )}/events?timeMin=${startOfDay}&timeMax=${endOfDay}&singleEvents=true&orderBy=startTime&key=${apiKey}`;
+    )}/events?timeMin=${startOfDayUtc}&timeMax=${endOfDayUtc}&singleEvents=true&orderBy=startTime&key=${apiKey}`;
 
-    // Fetch data
+    // Fetch data from Google Calendar API
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    // Handle API errors
     if (!response.ok) {
       throw new Error(data.error?.message || "Failed to fetch events");
     }
@@ -45,10 +48,11 @@ export async function GET(req: Request) {
       (item: GoogleCalendarEvent) => ({
         start: { dateTime: item.start.dateTime },
         end: { dateTime: item.end.dateTime },
-        summary: item.summary, // Assuming summary contains "Available" or other names
+        summary: item.summary,
       })
     );
-    const timeSlots = generateTimeSlots(events);
+
+    const timeSlots = generateTimeSlots(events, timeZone);
 
     return new NextResponse(JSON.stringify({ timeSlots }), {
       status: 200,
@@ -65,17 +69,18 @@ export async function GET(req: Request) {
   }
 }
 
-const generateTimeSlots = (events: CalendarEvent[]): string[] => {
+const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] => {
   const availableSlots: Set<string> = new Set(); // Available slots
   const busySlots: CalendarEvent[] = []; // Busy events with start/end times
 
   // Helper function to generate 60-minute slots within a given time range
   const generateSlotRange = (start: Date, end: Date) => {
     const slots: string[] = [];
-    const currentSlot = new Date(start);
+    let currentSlot = new Date(start);
 
     while (currentSlot < end) {
-      const slotString = currentSlot.toTimeString().slice(0, 5);
+      // Format the current slot in PST
+      const slotString = format(currentSlot, "HH:mm", { timeZone });
       slots.push(slotString);
       currentSlot.setHours(currentSlot.getHours() + 1); // Increase by 1 hour
     }
@@ -105,17 +110,10 @@ const generateTimeSlots = (events: CalendarEvent[]): string[] => {
       const busyStart = new Date(busyEvent.start.dateTime);
       const busyEnd = new Date(busyEvent.end.dateTime);
 
-      // Create a Date object using the same day as the busy event and the slot time
+      // Create a Date object using the busy event's day and the slot time
       const [hour, minute] = slotStr.split(":").map(Number);
       const slotDate = new Date(busyStart);
       slotDate.setHours(hour, minute, 0, 0);
-
-      console.log("Checking slot:", slotDate);
-      console.log("Busy event:", busyStart, busyEnd);
-      console.log(
-        "Slot falls within busy range:",
-        slotDate >= busyStart && slotDate < busyEnd
-      );
 
       // If slot falls within a busy time range
       if (slotDate >= busyStart && slotDate < busyEnd) {

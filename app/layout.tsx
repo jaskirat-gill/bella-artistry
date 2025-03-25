@@ -18,7 +18,6 @@ interface LayoutProps {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const masterConfig: MasterConfig[] = await getMasterConfig();
-  console.log("config", masterConfig[0]);
 
   return (
     <html lang="en">

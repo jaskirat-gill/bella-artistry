@@ -89,7 +89,6 @@ export default function ContactDetailsPage() {
           getArtistById(artistId),
           getServiceById(serviceId),
         ]);
-        console.log("artistData", artistData);
         if (!artistData || !serviceData) {
           throw new Error("Could not retrieve booking details");
         }
