@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Service, { PortfolioItem } from "@/lib/types";
 import { getPortfolio, getServices } from "@/api/controller";
 import { useConfig } from "@/components/ConfigContextProvider";
+import PortfolioImageRotator from "@/components/PortfolioImageRotator";
 
 export default function Home() {
   const [services, setServices] = useState<Service[]>([]);
@@ -97,12 +98,7 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <div className="order-1 md:order-2 h-[400px] md:h-[500px] overflow-hidden rounded-lg shadow-xl">
-              <div
-                className="w-full h-full bg-cover bg-center transition-transform hover:scale-105 duration-700"
-                style={{ backgroundImage: `url(${portfolio[0]?.sourceUrl})` }}
-              ></div>
-            </div>
+            <PortfolioImageRotator portfolio={portfolio} />
           </div>
         </div>
       </section>
