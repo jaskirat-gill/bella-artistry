@@ -142,7 +142,7 @@ export default function BookingReviewPage() {
       }
 
       try {
-        const res = await fetch("/api/booking", {
+        await fetch("/api/booking", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -150,7 +150,6 @@ export default function BookingReviewPage() {
           body: JSON.stringify({ bookingData, artist, service }),
         });
 
-        const data = await res.json();
       } catch (error) {
         console.error("Error:", error);
       }

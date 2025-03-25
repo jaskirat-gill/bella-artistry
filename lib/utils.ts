@@ -40,6 +40,7 @@ export function formatTimeTo12Hour(time: string): string {
   const [hour, minute] = time.split(':').map(Number);
   const period = hour >= 12 ? 'pm' : 'am';
   const formattedHour = hour % 12 || 12; // Convert 0 to 12 for midnight
-  return `${formattedHour}${period}`;
+  const formattedMinute = minute.toString().padStart(2, '0');
+  return `${formattedHour}:${formattedMinute}${period}`;
 }
 
