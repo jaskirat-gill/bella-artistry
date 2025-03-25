@@ -52,9 +52,7 @@ export async function GET(req: Request) {
       })
     );
 
-    console.log("Fetched events:", events);
     const timeSlots = generateTimeSlots(events, timeZone);
-    console.log("Available time slots:", timeSlots);
     return new NextResponse(JSON.stringify({ timeSlots }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -78,14 +76,12 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
   const generateSlotRange = (start: Date, end: Date) => {
     const slots: string[] = [];
     const currentSlot = new Date(start);
-    console.log("Start:", currentSlot);
     while (currentSlot < end) {
       // Format the current slot in PST
       const slotString = format(currentSlot, "HH:mm", { timeZone });
       slots.push(slotString);
       currentSlot.setHours(currentSlot.getHours() + 1); // Increase by 1 hour
     }
-    console.log("Slots:", slots);
     return slots;
   };
 
@@ -127,7 +123,6 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
       result.add(slotStr);
     }
   });
-  console.log("Result:", result);
   // Convert Set to Array & sort by time
   return Array.from(result).sort();
 };
