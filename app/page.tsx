@@ -36,6 +36,7 @@ export default function Home() {
           autoPlay
           muted
           loop
+          playsInline
           className="absolute w-full h-full object-cover"
           style={{ objectFit: "cover", filter: "brightness(0.7)" }}
         >
@@ -109,6 +110,7 @@ export default function Home() {
           autoPlay
           muted
           loop
+          playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
           style={{ objectFit: "cover" }}
         >

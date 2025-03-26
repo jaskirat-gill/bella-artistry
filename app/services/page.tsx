@@ -55,6 +55,7 @@ export default function ServicesPage() {
         autoPlay
         muted
         loop
+        playsInline
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.3)" }}
       >
