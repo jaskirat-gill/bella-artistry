@@ -8,6 +8,7 @@ import Service, { PortfolioItem } from "@/lib/types";
 import { getPortfolio, getServices } from "@/api/controller";
 import { useConfig } from "@/components/ConfigContextProvider";
 import PortfolioImageRotator from "@/components/PortfolioImageRotator";
+import VideoBackground from "@/components/VideoBackground";
 
 export default function Home() {
   const [services, setServices] = useState<Service[]>([]);
@@ -32,17 +33,10 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
+        <VideoBackground
           className="absolute w-full h-full object-cover"
           style={{ objectFit: "cover", filter: "brightness(0.7)" }}
-        >
-          <source src="/sky.mp4" type="video/mp4" />
-        </video>
-
+        />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto text-white">
           <p className="font-sans font-medium uppercase tracking-widest text-sm md:text-base mb-4 opacity-90">
             {config.landingPageTagline}
@@ -106,16 +100,10 @@ export default function Home() {
 
       {/* Services Section */}
       <section className="py-16 md:py-24 relative">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
+        <VideoBackground
           className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
           style={{ objectFit: "cover" }}
-        >
-          <source src="/sky.mp4" type="video/mp4" />
-        </video>
+        />
 
         <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -178,7 +166,7 @@ export default function Home() {
             <div className="order-1 md:order-2 h-[400px] md:h-[500px] overflow-hidden rounded-lg shadow-xl">
               <div
                 className="w-full h-full bg-cover bg-center transition-transform hover:scale-105 duration-700"
-                style={{ backgroundImage: "url('/logo.jpg')" }}
+                style={{ backgroundImage: "url('/bella_artistry_pink.jpg')" }}
               ></div>
             </div>
           </div>

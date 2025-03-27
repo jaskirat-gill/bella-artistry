@@ -20,6 +20,7 @@ import {
 import { getArtistById, getServiceById } from "@/api/controller";
 import Service, { TeamMember } from "@/lib/types";
 import { formatDuration } from "@/lib/utils";
+import VideoBackground from "@/components/VideoBackground";
 
 export default function ContactDetailsPage() {
   const router = useRouter();
@@ -193,17 +194,11 @@ export default function ContactDetailsPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.9)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-5xl mx-auto p-6">

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useConfig } from "@/components/ConfigContextProvider";
+import VideoBackground from "@/components/VideoBackground";
 
 // Animation variants
 const containerVariants = {
@@ -120,16 +121,9 @@ export default function ContactPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute w-full h-full object-cover"
-        style={{ filter: "brightness(0.3)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-      </video>
+
+      <VideoBackground className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.3)" }}/>
 
       {/* Content */}
       <div className="relative z-10 pt-24 pb-16">

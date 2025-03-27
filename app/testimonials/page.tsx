@@ -13,6 +13,7 @@ import {
 import { motion } from "framer-motion";
 import { Testimonial } from "@/lib/types";
 import { getTestimonials } from "@/api/controller";
+import VideoBackground from "@/components/VideoBackground";
 
 // Animation variants
 const containerVariants = {
@@ -218,16 +219,11 @@ export default function TestimonialsPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.9)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 pt-24 pb-16">
@@ -271,8 +267,8 @@ export default function TestimonialsPage() {
               Share Your Experience
             </h2>
             <p className="text-pink-100 mb-6">
-              Have you had an amazing experience with our services? We&apos;d love to
-              hear about it!.
+              Have you had an amazing experience with our services? We&apos;d
+              love to hear about it!.
             </p>
             <Button
               className="bg-pink-500 hover:bg-pink-600 text-white"

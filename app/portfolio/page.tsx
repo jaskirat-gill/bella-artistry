@@ -14,6 +14,8 @@ import { motion } from "framer-motion";
 import type { PortfolioItem } from "@/lib/types";
 import { getPortfolio } from "@/api/controller";
 import { useConfig } from "@/components/ConfigContextProvider";
+import VideoBackground from "@/components/VideoBackground";
+import Image from "next/image";
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
@@ -193,16 +195,9 @@ export default function BlogPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute w-full h-full object-cover"
-        style={{ filter: "brightness(0.3)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-      </video>
+
+      <VideoBackground className="absolute w-full h-full object-cover"
+        style={{ filter: "brightness(0.3)" }}/>
 
       {/* Content */}
       <div className="relative z-10 pt-24 pb-16">
@@ -308,10 +303,12 @@ export default function BlogPage() {
             {selectedItem && (
               <div>
                 <div className="relative w-full h-[70vh] max-h-[80vh]">
-                  <img
+                  <Image
                     src={selectedItem.sourceUrl || "/placeholder.svg"}
                     alt={selectedItem.name}
                     className="w-full h-full object-contain"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
 

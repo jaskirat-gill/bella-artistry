@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Calendar, Clock, User, Home, Mail } from "lucide-react";
 import Link from "next/link";
+import VideoBackground from "@/components/VideoBackground";
 
 export default function BookingConfirmationPage() {
   const searchParams = useSearchParams();
@@ -55,17 +56,11 @@ export default function BookingConfirmationPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.9)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-3xl mx-auto p-6">

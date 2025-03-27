@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import type Service from "@/lib/types";
 import type { TeamMember } from "@/lib/types";
 import { getArtists, getServices } from "@/api/controller";
+import VideoBackground from "@/components/VideoBackground";
 
 // Types
 interface CalendarDate {
@@ -306,11 +307,11 @@ export default function BookingPage() {
 
         // Subtract 7 hours from each time slot
         const adjustedTimeSlots = data.timeSlots.map((time: string) => {
-          const [hour, minute] = time.split(':').map(Number);
+          const [hour, minute] = time.split(":").map(Number);
           const date = new Date();
           date.setHours(hour - 7, minute);
-          const adjustedHour = date.getHours().toString().padStart(2, '0');
-          const adjustedMinute = date.getMinutes().toString().padStart(2, '0');
+          const adjustedHour = date.getHours().toString().padStart(2, "0");
+          const adjustedMinute = date.getMinutes().toString().padStart(2, "0");
           return `${adjustedHour}:${adjustedMinute}`;
         });
 
@@ -494,17 +495,11 @@ export default function BookingPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.9)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto p-6">

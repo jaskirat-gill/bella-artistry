@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { TeamMember } from "@/lib/types";
 import { getArtists } from "@/api/controller";
 import { useConfig } from "@/components/ConfigContextProvider";
+import Image from "next/image";
+import VideoBackground from "@/components/VideoBackground";
 
 // Animation variants
 const containerVariants = {
@@ -48,10 +50,12 @@ const TeamMemberCard = ({
     >
       <div className="relative aspect-square overflow-hidden">
         {member.image ? (
-          <img
+          <Image
             src={member.image}
             alt={member.name}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-pink-200 text-pink-900 font-bold text-4xl">
@@ -92,10 +96,12 @@ const TeamMemberDetail = ({
         <div className="md:w-1/3">
           <div className="relative h-full">
             {member.image ? (
-              <img
+              <Image
                 src={member.image}
                 alt={member.name}
                 className="w-full h-full object-cover md:h-full"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-pink-200 text-pink-900 font-bold text-6xl">
@@ -183,17 +189,11 @@ export default function AboutPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.3)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-      </video>
-
+      />
       {/* Content */}
       <div className="relative z-10 pt-24 pb-16">
         <div className="container mx-auto px-4">

@@ -29,6 +29,7 @@ import { getArtistById, getServiceById } from "@/api/controller";
 import type Service from "@/lib/types";
 import type { TeamMember, BookingData } from "@/lib/types";
 import { useConfig } from "@/components/ConfigContextProvider";
+import VideoBackground from "@/components/VideoBackground";
 
 export default function BookingReviewPage() {
   const router = useRouter();
@@ -129,33 +130,33 @@ export default function BookingReviewPage() {
   const handleConfirm = async () => {
     try {
       setIsSubmitting(true);
-      if(!bookingData.time) {
+      if (!bookingData.time) {
         throw new Error("Missing booking time");
       }
       // Adjust the time by adding 7 hours back
-      const [hour, minute] = bookingData.time.split(':').map(Number);
+      const [hour, minute] = bookingData.time.split(":").map(Number);
       const date = new Date();
       date.setHours(hour + 7, minute);
-      const adjustedHour = date.getHours().toString().padStart(2, '0');
-      const adjustedMinute = date.getMinutes().toString().padStart(2, '0');
+      const adjustedHour = date.getHours().toString().padStart(2, "0");
+      const adjustedMinute = date.getMinutes().toString().padStart(2, "0");
       const adjustedTime = `${adjustedHour}:${adjustedMinute}`;
-  
+
       const adjustedBookingData = {
         ...bookingData,
         time: adjustedTime,
       };
-  
+
       // In a real application, you would submit the booking to your backend here
       const response = await fetch("/api/calendar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(adjustedBookingData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to confirm booking");
       }
-  
+
       try {
         await fetch("/api/booking", {
           method: "POST",
@@ -164,11 +165,10 @@ export default function BookingReviewPage() {
           },
           body: JSON.stringify({ bookingData, artist, service }),
         });
-  
       } catch (error) {
         console.error("Error:", error);
       }
-  
+
       // For now, we'll just simulate a successful booking
       const confirmationParams = new URLSearchParams({
         artistName: artist?.name || "",
@@ -179,7 +179,7 @@ export default function BookingReviewPage() {
         firstName: adjustedBookingData.firstName || "",
         lastName: adjustedBookingData.lastName || "",
       });
-  
+
       router.push(`/book-now/confirmation?${confirmationParams.toString()}`);
     } catch (err) {
       console.error("Error confirming booking:", err);
@@ -210,17 +210,11 @@ export default function BookingReviewPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.9)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-3xl mx-auto p-6">

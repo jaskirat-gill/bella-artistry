@@ -9,6 +9,7 @@ import Service from "@/lib/types";
 import { getServices } from "@/api/controller";
 import Link from "next/link";
 import { useConfig } from "@/components/ConfigContextProvider";
+import VideoBackground from "@/components/VideoBackground";
 
 // Animation variants for staggered animations
 const containerVariants = {
@@ -51,16 +52,11 @@ export default function ServicesPage() {
   return (
     <div className="relative min-h-screen">
       {/* Video Background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
+
+      <VideoBackground
         className="absolute w-full h-full object-cover"
         style={{ filter: "brightness(0.3)" }}
-      >
-        <source src="/sky.mp4" type="video/mp4" />
-      </video>
+      />
 
       {/* Content */}
       <div className="relative z-10 pt-24 pb-16">

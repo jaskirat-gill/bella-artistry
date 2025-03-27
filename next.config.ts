@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ["bella-artistry-admin.jaskiratgill.ca"], // Add your external image domain here
+  },
 };
 
 export default nextConfig;
