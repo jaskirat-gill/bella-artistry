@@ -174,7 +174,7 @@ export default function BookingReviewPage() {
         artistName: artist?.name || "",
         serviceName: service?.title || "",
         date: adjustedBookingData.date || "",
-        time: adjustedBookingData.time || "",
+        time: bookingData.time || "",
         price: service?.price.toString() || "",
         firstName: adjustedBookingData.firstName || "",
         lastName: adjustedBookingData.lastName || "",
