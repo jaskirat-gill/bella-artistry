@@ -21,7 +21,7 @@ export async function GET(req: Request) {
       );
     }
 
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+    const apiKey = process.env.GOOGLE_API_KEY;
     if (!apiKey) throw new Error("Missing Google API Key");
 
     // Define the PST time zone (America/Los_Angeles)
