@@ -95,7 +95,7 @@ const Pagination = ({
   // Generate page numbers
   const getPageNumbers = () => {
     const pages = [];
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 50;
 
     if (totalPages <= maxPagesToShow) {
       // Show all pages if total is less than max
@@ -192,7 +192,7 @@ const Pagination = ({
 
 export default function TestimonialsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const testimonialsPerPage = 6;
+  const testimonialsPerPage = 3;
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
