@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fromZonedTime, format } from "date-fns-tz";
+import { fromZonedTime, format, toZonedTime } from "date-fns-tz";
 import { CalendarEvent } from "@/lib/types";
 
 interface GoogleCalendarEvent {
@@ -74,12 +74,14 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
   const busySlots: CalendarEvent[] = []; // Busy events with start/end times
 
   // Helper function to generate 60-minute slots within a given time range
-  const generateSlotRange = (start: Date, end: Date) => {
+  const generateSlotRange = (start: Date, end: Date, timeZone: string) => {
     const slots: string[] = [];
-    const currentSlot = new Date(start);
+    let currentSlot = new Date(start);
     while (currentSlot < end) {
-      // Format the current slot in PST as "h a" (e.g., 2AM, 5PM)
-      const slotString = format(currentSlot, "h a", { timeZone });
+      // Convert the current slot to the specified time zone
+      const zonedTime = toZonedTime(currentSlot, timeZone);
+      // Format the time in the desired format (e.g., "h a")
+      const slotString = format(zonedTime, "h a", { timeZone });
       slots.push(slotString);
       currentSlot.setHours(currentSlot.getHours() + 1); // Increase by 1 hour
     }
@@ -92,7 +94,7 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
     const endTime = new Date(event.end.dateTime);
 
     if (event.summary === "Available") {
-      const slots = generateSlotRange(startTime, endTime);
+      const slots = generateSlotRange(startTime, endTime, timeZone);
       slots.forEach((slot) => availableSlots.add(slot));
     } else {
       busySlots.push(event);
