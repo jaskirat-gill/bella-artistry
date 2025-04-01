@@ -3,7 +3,6 @@ import { google } from "googleapis";
 import { JWT } from "google-auth-library";
 import { getArtistById, getServiceById } from "@/api/controller";
 import { BookingData } from "@/lib/types";
-import { toZonedTime } from "date-fns-tz";
 
 // Ensure date is formatted correctly as YYYY-MM-DD
 const formatDateString = (date: string) => {
