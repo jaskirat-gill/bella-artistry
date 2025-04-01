@@ -76,7 +76,7 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
   // Helper function to generate 60-minute slots within a given time range
   const generateSlotRange = (start: Date, end: Date, timeZone: string) => {
     const slots: string[] = [];
-    let currentSlot = new Date(start);
+    const currentSlot = new Date(start);
     while (currentSlot < end) {
       // Convert the current slot to the specified time zone
       const zonedTime = toZonedTime(currentSlot, timeZone);
