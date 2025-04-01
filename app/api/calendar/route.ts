@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       return hour24.toString().padStart(2, "0") + ":00"; // Convert to "HH:00" format
     };
     const formattedTime = parseTime(booking.time);
-    const startTime = toZonedTime(`${formattedDate}T${formattedTime}`, "America/Los_Angeles");
+    const startTime = new Date(`${formattedDate}T${formattedTime}:00-07:00`);
     console.log("Start time:", startTime);
     if (isNaN(startTime.getTime())) throw new Error("Invalid start time");
     
