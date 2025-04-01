@@ -51,9 +51,7 @@ export async function GET(req: Request) {
         summary: item.summary,
       })
     );
-    console.log("Fetched events:", events);
     const timeSlots = generateTimeSlots(events, timeZone);
-    console.log("Time slots:", timeSlots);
     return new NextResponse(JSON.stringify({ timeSlots }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

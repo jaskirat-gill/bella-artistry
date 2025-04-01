@@ -66,9 +66,11 @@ export async function POST(req: Request) {
       const hour24 = period.toLowerCase() === "pm" && hour !== "12" ? parseInt(hour) + 12 : parseInt(hour === "12" ? "0" : hour);
       return hour24.toString().padStart(2, "0") + ":00"; // Convert to "HH:00" format
     };
-    
+    console.log("Parsed time:", booking.time);
     const formattedTime = parseTime(booking.time);
+    console.log("Formatted time:", formattedTime);
     const startTime = new Date(`${formattedDate}T${formattedTime}`);
+    console.log("Start time:", startTime);
     if (isNaN(startTime.getTime())) throw new Error("Invalid start time");
     
     const endTime = new Date(startTime.getTime() + duration * 60000);
