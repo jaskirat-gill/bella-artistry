@@ -121,7 +121,6 @@ const TimeSlotSelector = ({
       </div>
     );
   }
-
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
       {timeSlots.map((time, index) => (
@@ -300,22 +299,21 @@ export default function BookingPage() {
           `/api/calendar/fetch?calendarId=${selectedArtist.calendarId}&date=${formattedDate}`
         );
         const data = await response.json();
-
         if (!response.ok) {
           throw new Error(data.error || "Failed to fetch time slots");
         }
 
-        // Subtract 7 hours from each time slot
-        const adjustedTimeSlots = data.timeSlots.map((time: string) => {
-          const [hour, minute] = time.split(":").map(Number);
-          const date = new Date();
-          date.setHours(hour - 7, minute);
-          const adjustedHour = date.getHours().toString().padStart(2, "0");
-          const adjustedMinute = date.getMinutes().toString().padStart(2, "0");
-          return `${adjustedHour}:${adjustedMinute}`;
-        });
+        // // Subtract 7 hours from each time slot
+        // const adjustedTimeSlots = data.timeSlots.map((time: string) => {
+        //   const [hour, minute] = time.split(":").map(Number);
+        //   const date = new Date();
+        //   date.setHours(hour - 7, minute);
+        //   const adjustedHour = date.getHours().toString().padStart(2, "0");
+        //   const adjustedMinute = date.getMinutes().toString().padStart(2, "0");
+        //   return `${adjustedHour}:${adjustedMinute}`;
+        // });
 
-        setTimeSlots(adjustedTimeSlots);
+        setTimeSlots(data.timeSlots);
       } catch (err) {
         console.error("Error fetching time slots:", err);
         setError(

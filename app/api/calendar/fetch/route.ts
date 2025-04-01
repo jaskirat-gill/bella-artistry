@@ -77,8 +77,8 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
     const slots: string[] = [];
     const currentSlot = new Date(start);
     while (currentSlot < end) {
-      // Format the current slot in PST
-      const slotString = format(currentSlot, "HH:mm", { timeZone });
+      // Format the current slot in PST as "h a" (e.g., 2AM, 5PM)
+      const slotString = format(currentSlot, "h a", { timeZone });
       slots.push(slotString);
       currentSlot.setHours(currentSlot.getHours() + 1); // Increase by 1 hour
     }
@@ -97,7 +97,6 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
       busySlots.push(event);
     }
   });
-
   const result: Set<string> = new Set();
 
   availableSlots.forEach((slotStr) => {
@@ -108,9 +107,10 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
       const busyEnd = new Date(busyEvent.end.dateTime);
 
       // Create a Date object using the busy event's day and the slot time
-      const [hour, minute] = slotStr.split(":").map(Number);
+      const [hour, period] = slotStr.split(" ");
+      const hour24 = period === "PM" && hour !== "12" ? parseInt(hour) + 12 : parseInt(hour);
       const slotDate = new Date(busyStart);
-      slotDate.setHours(hour, minute, 0, 0);
+      slotDate.setHours(hour24, 0, 0, 0);
 
       // If slot falls within a busy time range
       if (slotDate >= busyStart && slotDate < busyEnd) {
@@ -124,5 +124,9 @@ const generateTimeSlots = (events: CalendarEvent[], timeZone: string): string[] 
     }
   });
   // Convert Set to Array & sort by time
-  return Array.from(result).sort();
+  return Array.from(result).sort((a, b) => {
+    const dateA = new Date(`1970-01-01T${a}`);
+    const dateB = new Date(`1970-01-01T${b}`);
+    return dateA.getTime() - dateB.getTime();
+  });
 };

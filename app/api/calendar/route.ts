@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Load service account credentials from env
+    //Load service account credentials from env
     const serviceAccount = JSON.parse(
       process.env.GOOGLE_SERVICE_ACCOUNT || "{}"
     );
@@ -56,10 +56,21 @@ export async function POST(req: Request) {
     // Fix date formatting
     const formattedDate = formatDateString(booking.date);
 
-    // Construct start and end times
-    const startTime = new Date(`${formattedDate}T${booking.time}:00`);
+    const parseTime = (time: string): string => {
+      const match = time.match(/(\d+)\s?(am|pm)/i);
+      if (!match) {
+        throw new Error(`Invalid time format: ${time}`);
+      }
+      const [_, hour, period] = match;
+      void(_)
+      const hour24 = period.toLowerCase() === "pm" && hour !== "12" ? parseInt(hour) + 12 : parseInt(hour === "12" ? "0" : hour);
+      return hour24.toString().padStart(2, "0") + ":00"; // Convert to "HH:00" format
+    };
+    
+    const formattedTime = parseTime(booking.time);
+    const startTime = new Date(`${formattedDate}T${formattedTime}`);
     if (isNaN(startTime.getTime())) throw new Error("Invalid start time");
-
+    
     const endTime = new Date(startTime.getTime() + duration * 60000);
 
     const event = {

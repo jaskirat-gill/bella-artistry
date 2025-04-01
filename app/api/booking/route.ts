@@ -1,5 +1,5 @@
 import sgMail from "@sendgrid/mail";
-import { formatDate, formatTimeTo12Hour } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 
 // Set your SendGrid API Key from environment variables
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
@@ -146,7 +146,7 @@ If you need to make changes, please reach out to us at ${businessPhone} or ${bus
                           Time:
                         </td>
                         <td style="color: #4B5563; font-size: 15px; padding-bottom: 15px;">
-                          ${formatTimeTo12Hour(bookingData.time)}
+                          ${(bookingData.time)}
                         </td>
                       </tr>
                       <tr>
