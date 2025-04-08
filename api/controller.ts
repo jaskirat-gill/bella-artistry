@@ -77,8 +77,10 @@ export async function getArtists(): Promise<TeamMember[]> {
     role: node.teammemberfields.role,
     bio: node.teammemberfields.bio,
     specialties: node.teammemberfields.specialtiesSeparatedByCommas
-      .split(",")
-      .map((s: string) => s.trim()),
+      ? node.teammemberfields.specialtiesSeparatedByCommas
+          .split(",")
+          .map((s: string) => s.trim())
+      : [],
     experience: node.teammemberfields.experience,
     image: node.teammemberfields.profilePicture
       ? node.teammemberfields.profilePicture.node.sourceUrl
@@ -108,8 +110,10 @@ export async function getArtistById(id: string): Promise<TeamMember | null> {
     role: data.teamMember.teammemberfields.role,
     bio: data.teamMember.teammemberfields.bio,
     specialties: data.teamMember.teammemberfields.specialtiesSeparatedByCommas
-      .split(",")
-      .map((s: string) => s.trim()),
+      ? data.teamMember.teammemberfields.specialtiesSeparatedByCommas
+          .split(",")
+          .map((s: string) => s.trim())
+      : [],
     experience: data.teamMember.teammemberfields.experience,
     image: data.teamMember.teammemberfields.profilePicture
       ? data.teamMember.teammemberfields.profilePicture.node.sourceUrl
