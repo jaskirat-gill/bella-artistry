@@ -142,7 +142,6 @@ interface ServiceCardProps {
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
-  const formattedPrice = formatCurrency(service.price);
   const formattedDuration = formatDuration(service.duration);
 
   return (
@@ -166,10 +165,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
         <p className="text-pink-700 mb-6 line-clamp-4">{service.description}</p>
 
         <div className="flex items-center space-x-6 mb-4">
-          <div className="flex items-center text-pink-900">
-            <DollarSign className="h-4 w-4 mr-1 text-pink-500" />
-            <span>{formattedPrice}</span>
-          </div>
 
           <div className="flex items-center text-pink-900">
             <Clock className="h-4 w-4 mr-1 text-pink-500" />

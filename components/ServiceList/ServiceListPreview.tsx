@@ -24,8 +24,6 @@ export default function ServiceListPreview({
 
 const ServiceCardPreview = ({ service }: { service: Service }) => {
 
-  const formattedPrice = formatCurrency(service.price);
-
   return (
     <div className="w-full rounded-none overflow-hidden mx-auto border-8 border-pink-900 relative h-full min-h-[300px]">
       <div className="p-6 pb-20 text-center h-full text-pink-900">
@@ -36,9 +34,6 @@ const ServiceCardPreview = ({ service }: { service: Service }) => {
           {service.title}
         </a>
         <div className="border-top border border-pink-400 w-full my-6"></div>
-        <p className=" text-base">
-          {formattedPrice}
-        </p>
         <p className=" text-base">
           {formatDuration(service.duration)}
         </p>

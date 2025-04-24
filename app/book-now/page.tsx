@@ -156,11 +156,6 @@ const BookingSummary = ({
 }) => {
   const router = useRouter();
 
-  const getServicePrice = () => {
-    if (!selectedService) return null;
-    return selectedService.price;
-  };
-
   const isBookingComplete =
     selectedArtist && selectedService && selectedDate && selectedTime;
 
@@ -204,9 +199,6 @@ const BookingSummary = ({
             <div className="mt-2 pt-2 border-t border-pink-100">
               <p className="text-sm text-pink-400">
                 {formatDuration(selectedService!.duration)}
-              </p>
-              <p className="font-medium text-pink-900">
-                ${getServicePrice()?.toFixed(2)}
               </p>
             </div>
           </div>
@@ -570,7 +562,7 @@ export default function BookingPage() {
                         <SelectContent>
                           {services.map((service) => (
                             <SelectItem key={service.id} value={service.id}>
-                              {service.title} (${service.price})
+                              {service.title}
                             </SelectItem>
                           ))}
                         </SelectContent>

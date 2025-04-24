@@ -37,7 +37,6 @@ Artist: ${artist?.name}
 Service: ${service?.title}
 Date: ${formattedDate}
 Time: ${bookingData.time}
-Price: $${service?.price.toFixed(2)}
 
 If you need to make changes, please reach out to us at ${businessPhone} or ${businessEmail}.`,
       html: `
@@ -147,14 +146,6 @@ If you need to make changes, please reach out to us at ${businessPhone} or ${bus
                         </td>
                         <td style="color: #4B5563; font-size: 15px; padding-bottom: 15px;">
                           ${(bookingData.time)}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="150" style="color: #BE185D; font-size: 15px; font-weight: 600;">
-                          Price:
-                        </td>
-                        <td style="color: #4B5563; font-size: 15px; font-weight: 600;">
-                          $${service?.price.toFixed(2)}
                         </td>
                       </tr>
                     </table>

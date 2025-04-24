@@ -16,7 +16,6 @@ export default function BookingConfirmationPage() {
     serviceName: "",
     date: "",
     time: "",
-    price: "",
     firstName: "",
     lastName: "",
   });
@@ -28,7 +27,6 @@ export default function BookingConfirmationPage() {
       serviceName: searchParams.get("serviceName") || "",
       date: searchParams.get("date") || "",
       time: searchParams.get("time") || "",
-      price: searchParams.get("price") || "",
       firstName: searchParams.get("firstName") || "",
       lastName: searchParams.get("lastName") || "",
     });

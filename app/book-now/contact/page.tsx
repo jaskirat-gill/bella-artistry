@@ -369,9 +369,6 @@ export default function ContactDetailsPage() {
                           <p className="text-sm text-pink-400">
                             {formatDuration(service?.duration || 0)}
                           </p>
-                          <p className="font-medium text-pink-900 mt-1">
-                            ${service?.price.toFixed(2)}
-                          </p>
                         </div>
                       </div>
 

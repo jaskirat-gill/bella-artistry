@@ -175,7 +175,6 @@ export default function BookingReviewPage() {
         serviceName: service?.title || "",
         date: bookingData.date || "",
         time: bookingData.time || "",
-        price: service?.price.toString() || "",
         firstName: bookingData.firstName || "",
         lastName: bookingData.lastName || "",
       });
@@ -338,10 +337,6 @@ export default function BookingReviewPage() {
                     <div className="flex items-start space-x-3">
                       <CreditCard className="h-5 w-5 text-pink-500 mt-0.5" />
                       <div>
-                        <p className="font-medium text-pink-900">Price</p>
-                        <p className="text-xl font-semibold text-pink-900">
-                          ${service?.price.toFixed(2)}
-                        </p>
                         <p className="text-sm text-pink-400">
                           {config.paymentNote}
                         </p>
