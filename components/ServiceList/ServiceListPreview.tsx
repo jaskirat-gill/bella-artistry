@@ -1,6 +1,6 @@
 'use client';
 
-import { formatCurrency, formatDuration } from "@/lib/utils";
+import { formatDuration } from "@/lib/utils";
 import Service from "@/lib/types";
 
 export default function ServiceListPreview({

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock, DollarSign, Sparkles } from "lucide-react";
-import { formatCurrency, formatDuration } from "@/lib/utils";
+import { ArrowRight, Clock, Sparkles } from "lucide-react";
+import { formatDuration } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Service from "@/lib/types";
 import { getServices } from "@/api/controller";
